@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/toast_bg"
+    android:gravity="center"
+    android:layout_width="150dp"
+    android:layout_height="150dp">
+
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:id="@+id/toast_type"
+        android:src="@drawable/toast_type"
+        android:layout_width="100dp"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:textColor="#fff"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="7pt"
+        android:text="这是提示信息！"
+        android:id="@+id/toast_txt"
+        android:gravity="center"
+        android:layout_width="150dp"
+        android:layout_height="30dp" />
+
+
+</LinearLayout>

@@ -1,0 +1,337 @@
+package chestnut.utils;
+
+import android.content.Context;
+import android.os.Environment;
+import android.util.Log;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static chestnut.utils.LogUtils.Config.*;
+
+/**
+ * <pre>
+ *     author: Chestnut
+ *     blog  :
+ *     time  : 2016年10月17日22:09:30
+ *     desc  :  日志输出：logcat && 文件日志
+ *     thanks To:
+ *     dependent on:
+ * </pre>
+ */
+public class LogUtils {
+
+    private LogUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
+    public static class Config {
+        static Boolean LOG_SWITCH = true;    // 日志文件总开关
+        static Boolean LOG_TO_FILE = false;  // 日志写入文件开关
+        static String LOG_TAG = "TAG";       // 默认的tag
+        static char LOG_TYPE = 'v';          // 输入日志类型，v代表输出所有信息,w则只输出警告...
+        final static SimpleDateFormat LOG_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  // 日志的输出格式
+        final static SimpleDateFormat FILE_SUFFIX = new SimpleDateFormat("yyyy-MM-dd");          // 日志文件格式
+        static String LOG_FILE_PATH;         // 日志文件保存路径
+        static String LOG_FILE_NAME;         // 日志文件保存名称
+
+        public static void setLogSwitch(Boolean logSwitch) {
+            LOG_SWITCH = logSwitch;
+        }
+        public static void setLogFileSwitch(Boolean logFileSwitch) {
+            LOG_TO_FILE = logFileSwitch;
+        }
+        public static void setLogTag(String logTag) {
+            LOG_TAG = logTag;
+        }
+    }
+
+    public static void init(Context context) { // 在Application中初始化
+        LOG_FILE_PATH = Environment.getExternalStorageDirectory().getPath() + File.separator + context.getPackageName();
+        LOG_FILE_NAME = "Log";
+    }
+
+    /****************************
+     * Warn
+     *********************************/
+    public static void w(String msg) {
+        w(LOG_TAG, msg);
+    }
+
+    public static void w(String tag, String msg) {
+        w(tag, msg, null);
+    }
+
+    public static void w(String tag, String msg, Throwable tr) {
+        log(tag, msg.toString(), tr, 'w');
+    }
+
+    public static void wD(String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(),LogUtils.class);
+        log(msg.toString(),'w',thread,stackTraceElement);
+        return;
+    }
+
+    public static void wToFile(String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
+        log2File(thread,stackTraceElement,'W',LOG_TAG,msg.toString());
+    }
+
+    public static void wToFile(String tag, String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
+        log2File(thread,stackTraceElement,'W',tag,msg.toString());
+    }
+
+    /***************************
+     * Error
+     ********************************/
+    public static void e(String msg) {
+        e(LOG_TAG, msg);
+    }
+
+    public static void e(String tag, String msg) {
+        e(tag, msg, null);
+    }
+
+    public static void e(String tag, String msg, Throwable tr) {
+        log(tag, msg.toString(), tr, 'e');
+    }
+
+    public static void eD(String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(),LogUtils.class);
+        log(msg.toString(),'e',thread,stackTraceElement);
+        return;
+    }
+
+    public static void eToFile(String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
+        log2File(thread,stackTraceElement,'E',LOG_TAG,msg.toString());
+    }
+
+    public static void eToFile(String tag, String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
+        log2File(thread,stackTraceElement,'E',tag,msg.toString());
+    }
+
+    /***************************
+     * Debug
+     ********************************/
+    public static void d(String msg) {
+        d(LOG_TAG, msg);
+    }
+
+    public static void d(String tag, String msg) {// 调试信息
+        d(tag, msg, null);
+    }
+
+    public static void d(String tag, String msg, Throwable tr) {
+        log(tag, msg.toString(), tr, 'd');
+    }
+
+    public static void dD(String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(),LogUtils.class);
+        log(msg.toString(),'d',thread,stackTraceElement);
+        return;
+    }
+
+    public static void dToFile(String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
+        log2File(thread,stackTraceElement,'D',LOG_TAG,msg.toString());
+    }
+
+    public static void dToFile(String tag, String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
+        log2File(thread,stackTraceElement,'D',tag,msg.toString());
+    }
+
+    /****************************
+     * Info
+     *********************************/
+    public static void i(String msg) {
+        i(LOG_TAG, msg);
+    }
+
+    public static void i(String tag, String msg) {
+        i(tag, msg, null);
+    }
+
+    public static void i(String tag, String msg, Throwable tr) {
+        log(tag, msg.toString(), tr, 'i');
+    }
+
+    public static void iD(String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(),LogUtils.class);
+        log(msg.toString(),'i',thread,stackTraceElement);
+        return;
+    }
+
+    public static void iToFile(String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
+        log2File(thread,stackTraceElement,'I',LOG_TAG,msg.toString());
+    }
+
+    public static void iToFile(String tag, String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
+        log2File(thread,stackTraceElement,'I',tag,msg.toString());
+    }
+
+    /**************************
+     * Verbose
+     ********************************/
+    public static void v(String msg) {
+        v(LOG_TAG, msg);
+    }
+
+    public static void v(String tag, String msg) {
+        v(tag, msg, null);
+    }
+
+    public static void v(String tag, String msg, Throwable tr) {
+        log(tag, msg.toString(), tr, 'v');
+    }
+
+    public static void vD(String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(),LogUtils.class);
+        log(msg.toString(),'v',thread,stackTraceElement);
+        return;
+    }
+
+    public static void vToFile(String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
+        log2File(thread,stackTraceElement,'V',LOG_TAG,msg.toString());
+    }
+
+    public static void vToFile(String tag, String msg) {
+        Thread thread = Thread.currentThread();
+        StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
+        log2File(thread,stackTraceElement,'V',tag,msg.toString());
+    }
+
+    /**
+     * 根据logLevel输出线程名，位置，和msg
+     * @param msg
+     * @param logLevel
+     * @param thread
+     * @param stackTraceElement
+     */
+    private static void log(String msg, char logLevel, Thread thread, StackTraceElement stackTraceElement) {
+        if (LOG_SWITCH) {
+            String x = stackTraceElement.toString();
+            int indexOf = x.indexOf("(");
+            switch (logLevel) {
+                case 'e':
+                    Log.e(" [" + thread.getName() + "] " + x.substring(indexOf), msg);
+                    break;
+                case 'i':
+                    Log.i(" [" + thread.getName() + "] " + x.substring(indexOf), msg);
+                    break;
+                case 'w':
+                    Log.w(" [" + thread.getName() + "] " + x.substring(indexOf), msg);
+                    break;
+                case 'v':
+                    Log.v(" [" + thread.getName() + "] " + x.substring(indexOf), msg);
+                    break;
+                case 'd':
+                    Log.d(" [" + thread.getName() + "] " + x.substring(indexOf), msg);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 根据tag, msg和等级，输出日志
+     *
+     * @param tag
+     * @param msg
+     * @param level
+     */
+    private static void log(String tag, String msg, Throwable tr, char level) {
+        if (LOG_SWITCH) {
+            if ('e' == level && ('e' == LOG_TYPE || 'v' == LOG_TYPE)) { // 输出错误信息
+                Log.e(tag, msg, tr);
+            } else if ('w' == level && ('w' == LOG_TYPE || 'v' == LOG_TYPE)) {
+                Log.w(tag, msg, tr);
+            } else if ('d' == level && ('d' == LOG_TYPE || 'v' == LOG_TYPE)) {
+                Log.d(tag, msg, tr);
+            } else if ('i' == level && ('d' == LOG_TYPE || 'v' == LOG_TYPE)) {
+                Log.i(tag, msg, tr);
+            } else {
+                Log.v(tag, msg, tr);
+            }
+        }
+    }
+
+    /**
+     * 打开日志文件并写入日志
+     *
+     * @return
+     **/
+    private synchronized static void log2File(
+            Thread thread,
+            StackTraceElement stackTraceElement,
+            char level,
+            String tag,
+            String text) {
+
+        if (!LOG_TO_FILE)
+            return;
+
+        Date nowTime = new Date();
+        String date = FILE_SUFFIX.format(nowTime);
+
+        String x = stackTraceElement.toString();
+        int indexOf = x.indexOf("(");
+        String threadMsg = thread.getName() + " : " + x.substring(indexOf);
+
+        String dateLogContent = LOG_FORMAT.format(nowTime) +
+                " [" + level + "] [" + tag + "] \n\t\t" +
+                threadMsg + "\n\t\t" +
+                text + "\n"; // 日志输出格式
+
+        File destDir = new File(LOG_FILE_PATH);
+        if (!destDir.exists()) {
+            destDir.mkdirs();
+        }
+        File file = new File(LOG_FILE_PATH, LOG_FILE_NAME + date);
+        try {
+            FileWriter filerWriter = new FileWriter(file, true);
+            BufferedWriter bufWriter = new BufferedWriter(filerWriter);
+            bufWriter.write(dateLogContent);
+            bufWriter.newLine();
+            bufWriter.close();
+            filerWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static StackTraceElement getCurrentStack(StackTraceElement[] trace, Class cla) {
+        StackTraceElement e = null;
+        for(int i = 0; i < trace.length; ++i) {
+            e = trace[i];
+            if(e.getClassName().equals(cla.getName())) {
+                ++i;
+                return trace[i];
+            }
+        }
+        return e;
+    }
+}

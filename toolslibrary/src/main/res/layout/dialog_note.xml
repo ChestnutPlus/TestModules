@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_note_bg"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/dialog_note_type"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/dialog_note_type"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#a39b9b"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <TextView
+        android:id="@+id/dialog_note_msg"
+        android:textColor="#000"
+        android:layout_gravity="center"
+        android:textSize="8pt"
+        android:gravity="center"
+        android:text="Hello"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+    <View
+        android:background="#a39b9b"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <Button
+        android:id="@+id/dialog_note_ok"
+        android:layout_gravity="center"
+        android:textSize="7pt"
+        android:text="OK"
+        android:background="@drawable/dialog_note_btn_bg"
+        android:layout_width="280dp"
+        android:layout_height="50dp" />
+
+</LinearLayout>
