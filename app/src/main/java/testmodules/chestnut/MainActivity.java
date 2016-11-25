@@ -3,30 +3,28 @@ package testmodules.chestnut;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
-import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import chestnut.utils.AppUtils;
-import chestnut.utils.ImageUtils;
 import chestnut.utils.LogUtils;
+import chestnut.utils.TimerUtils;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import testmodules.R;
 import chestnut.ui.Toastc;
 
@@ -105,15 +103,15 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button2:
-                Bitmap bitmap = ImageUtils.getBitmapFromUrl(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"/2.mp4",50);
-                ImageUtils.save(bitmap,Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"/23.jpg", Bitmap.CompressFormat.JPEG);
-                imageView.setImageBitmap(bitmap);
+
                 break;
 
             case R.id.button3:
+
                 break;
 
             case R.id.button4:
+
                 break;
 
             case R.id.button5:
