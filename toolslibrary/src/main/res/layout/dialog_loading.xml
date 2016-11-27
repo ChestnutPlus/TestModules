@@ -17,7 +17,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:textSize="6pt"
+        android:textSize="13sp"
         android:textColor="#fff"
         android:text="ProgressBar"
         android:layout_width="120dp"

@@ -20,7 +20,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import chestnut.ui.DialogLoading;
+import chestnut.ui.DialogNote;
+import chestnut.ui.ToastNote;
 import chestnut.utils.AppUtils;
+import chestnut.utils.HttpUtils;
 import chestnut.utils.LogUtils;
 import chestnut.utils.TimerUtils;
 import rx.functions.Action1;
@@ -31,12 +35,10 @@ import chestnut.ui.Toastc;
 public class MainActivity extends RxAppCompatActivity {
 
     Toastc toast = null;
-
     @Bind(R.id.imageView)
     ImageView imageView;
 
     private Context context = null;
-
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -103,15 +105,12 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button2:
-
                 break;
 
             case R.id.button3:
-
                 break;
 
             case R.id.button4:
-
                 break;
 
             case R.id.button5:

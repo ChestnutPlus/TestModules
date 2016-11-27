@@ -24,7 +24,7 @@
         android:id="@+id/dialog_note_msg"
         android:textColor="#000"
         android:layout_gravity="center"
-        android:textSize="8pt"
+        android:textSize="18sp"
         android:gravity="center"
         android:text="Hello"
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
     <Button
         android:id="@+id/dialog_note_ok"
         android:layout_gravity="center"
-        android:textSize="7pt"
+        android:textSize="14sp"
         android:text="OK"
         android:background="@drawable/dialog_note_btn_bg"
         android:layout_width="280dp"

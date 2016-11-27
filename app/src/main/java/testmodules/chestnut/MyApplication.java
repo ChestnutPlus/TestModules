@@ -3,6 +3,7 @@ package testmodules.chestnut;
 import android.app.Application;
 
 
+import chestnut.db.DBUtils;
 import chestnut.utils.CrashUtils;
 import chestnut.utils.LogUtils;
 import chestnut.utils.SPUtils;
@@ -19,7 +20,7 @@ public class MyApplication extends Application{
         CrashUtils.getInstance().init(this);
         LogUtils.init(this);
         SPUtils.getInstance().init(this,"My");
-        Realm.init(this);
+        DBUtils.getInstance().init(this);
     }
 
 }
