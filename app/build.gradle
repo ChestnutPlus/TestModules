@@ -39,15 +39,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile files('libs/lite-orm-1.9.1.jar')
-    compile files('libs/butterknife-7.0.1.jar')
-    compile files('libs/volley.jar')
-    compile files('libs/gson-2.2.4.jar')
     compile 'com.android.support:appcompat-v7:25.0.0'
     testCompile 'junit:junit:4.12'
-    compile files('libs/CCSDK1019.jar')
-    compile(name: 'CBDialoglibrary', ext: 'aar')
-    compile(name: 'StyledDialog', ext: 'aar')
-    compile(name: 'TyperEditText', ext: 'aar')
     compile project(path: ':toolslibrary')
 }

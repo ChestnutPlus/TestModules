@@ -12,30 +12,19 @@ import android.widget.Toast;
 
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import chestnut.ui.DialogLoading;
-import chestnut.ui.DialogNote;
-import chestnut.ui.ToastNote;
 import chestnut.utils.AppUtils;
-import chestnut.utils.HttpUtils;
 import chestnut.utils.LogUtils;
-import chestnut.utils.TimerUtils;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import testmodules.R;
 import chestnut.ui.Toastc;
 
 public class MainActivity extends RxAppCompatActivity {
 
     Toastc toast = null;
-    @Bind(R.id.imageView)
+    @BindView(R.id.imageView)
     ImageView imageView;
 
     private Context context = null;
@@ -66,7 +55,6 @@ public class MainActivity extends RxAppCompatActivity {
     }
     @Override
     protected void onDestroy() {
-        ButterKnife.unbind(this);
         super.onDestroy();
     }
     @Override
