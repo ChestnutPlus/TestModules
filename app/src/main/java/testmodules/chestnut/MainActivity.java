@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -74,6 +75,13 @@ public class MainActivity extends RxAppCompatActivity {
         ((Button)activity.findViewById(R.id.button5)).setText(btnNames[4]);
         ((Button)activity.findViewById(R.id.button6)).setText(btnNames[5]);
         ((Button)activity.findViewById(R.id.button7)).setText(btnNames[6]);
+        ((Button)activity.findViewById(R.id.button7)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LogUtils.e("-->jfldsjkl");
+                startActivity(new Intent(MainActivity.this,Main2Activity.class));
+            }
+        });
     }
     private String[] btnNames = {
             "1_"+"DialogActivity",
@@ -82,7 +90,7 @@ public class MainActivity extends RxAppCompatActivity {
             "4_"+"DialogLoading",
             "5_"+"",
             "6_"+"getBitmapFormUrl",
-            "7_"+"",
+            "7_"+"Main2Activity",
     };
 
     @OnClick({R.id.button1,R.id.button2,R.id.button3,R.id.button4,R.id.button5,R.id.button6,R.id.button7})
@@ -108,6 +116,7 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button7:
+                LogUtils.e("-->");
                 startActivity(new Intent(this,Main2Activity.class));
                 break;
         }
@@ -135,6 +144,7 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button7:
+                LogUtils.e("<--");
                 break;
         }
         return true;

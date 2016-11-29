@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import chestnut.ui.Toastc;
@@ -31,7 +31,7 @@ public class DialogActivity extends Activity {
 
     private Toastc toastc = null;
 
-    @Bind(R.id.gridView)
+    @BindView(R.id.gridView)
     GridView gridView;
 
     private int[] icons = {
@@ -97,7 +97,6 @@ public class DialogActivity extends Activity {
     }
     @Override
     protected void onDestroy() {
-        ButterKnife.unbind(this);
         super.onDestroy();
     }
     @Override

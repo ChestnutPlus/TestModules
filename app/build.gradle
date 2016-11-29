@@ -14,9 +14,21 @@ android {
         multiDexEnabled true
     }
     buildTypes {
-        release {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
             minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //signingConfig signingConfigs.release
+        }
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //signingConfig signingConfigs.release
         }
     }
     repositories {
@@ -42,4 +54,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
     testCompile 'junit:junit:4.12'
     compile project(path: ':toolslibrary')
+    compile 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }
