@@ -1,4 +1,4 @@
-package chestnut.db;
+package chestnut.Interface.db;
 
 import android.content.Context;
 
@@ -17,10 +17,10 @@ public interface DB<R,T> {
     boolean closeDB();
 
     <E extends T> boolean addSync(E o);             //E:要是需要继承T的Bean
-    <E extends T> boolean addAsync(E o,R r);        //R:回掉接口
+    <E extends T> boolean addAsync(E o, R r);        //R:回掉接口
     <E extends T> Observable<Boolean> addRx(Class<E> e, E o);
 
     <E extends T> boolean addOrUpdateSync(E o);
-    <E extends T> boolean addOrUpdateAsync(E o,R r);
+    <E extends T> boolean addOrUpdateAsync(E o, R r);
     <E extends T> Observable<Boolean> addOrUpdateRx(Class<E> e, E o);
 }
