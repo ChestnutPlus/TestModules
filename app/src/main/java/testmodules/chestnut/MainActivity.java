@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
-import butterknife.BindView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
@@ -25,7 +25,7 @@ import chestnut.ui.Toastc;
 public class MainActivity extends RxAppCompatActivity {
 
     Toastc toast = null;
-    @BindView(R.id.imageView)
+    @Bind(R.id.imageView)
     ImageView imageView;
 
     private Context context = null;
@@ -57,6 +57,7 @@ public class MainActivity extends RxAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -75,13 +76,6 @@ public class MainActivity extends RxAppCompatActivity {
         ((Button)activity.findViewById(R.id.button5)).setText(btnNames[4]);
         ((Button)activity.findViewById(R.id.button6)).setText(btnNames[5]);
         ((Button)activity.findViewById(R.id.button7)).setText(btnNames[6]);
-        ((Button)activity.findViewById(R.id.button7)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LogUtils.e("-->jfldsjkl");
-                startActivity(new Intent(MainActivity.this,Main2Activity.class));
-            }
-        });
     }
     private String[] btnNames = {
             "1_"+"DialogActivity",

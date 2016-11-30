@@ -8,7 +8,14 @@ import java.net.*;
 import java.util.Map;
 
 /**
- * Created by Chestnut on 2016/7/22.
+ * <pre>
+ *     author: Chestnut
+ *     blog  :
+ *     time  : 2016年11月30日17:05:55
+ *     desc  : Http基本请求： Get, Post
+ *     thanks To:
+ *     dependent on:
+ * </pre>
  */
 public class HttpUtils {
 

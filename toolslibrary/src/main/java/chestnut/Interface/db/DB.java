@@ -5,22 +5,28 @@ import android.content.Context;
 import rx.Observable;
 
 /**
- * Created by Chestnut on 2016/11/12.
- * 规范定义了DB的行为：
- *
- *      R   :   Async回调的接口
- *      T   :   继承数据库bean的类
+ * <pre>
+ *     author: Chestnut
+ *     blog  :
+ *     time  : 2016年11月30日14:52:41
+ *     desc  : 规范定义了DB的行为
+ *              CallBack   :   Async回调的接口
+ *                  Bean   :   继承数据库bean的类
+ *     thanks To:
+ *     dependent on:
+ *     updateLog：
+ * </pre>
  */
-public interface DB<R,T> {
+public interface DB<CallBack,Bean> {
 
     boolean init(Context context);
     boolean closeDB();
 
-    <E extends T> boolean addSync(E o);             //E:要是需要继承T的Bean
-    <E extends T> boolean addAsync(E o, R r);        //R:回掉接口
-    <E extends T> Observable<Boolean> addRx(Class<E> e, E o);
+    <DbBean extends Bean> boolean addSync(DbBean o);
+    <DbBean extends Bean> boolean addAsync(DbBean o, CallBack r);
+    <DbBean extends Bean> Observable<Boolean> addRx(Class<DbBean> DbBean, DbBean o);
 
-    <E extends T> boolean addOrUpdateSync(E o);
-    <E extends T> boolean addOrUpdateAsync(E o, R r);
-    <E extends T> Observable<Boolean> addOrUpdateRx(Class<E> e, E o);
+    <DbBean extends Bean> boolean addOrUpdateSync(DbBean o);
+    <DbBean extends Bean> boolean addOrUpdateAsync(DbBean o, CallBack r);
+    <DbBean extends Bean> Observable<Boolean> addOrUpdateRx(Class<DbBean> DbBean, DbBean o);
 }
