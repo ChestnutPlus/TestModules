@@ -110,7 +110,6 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button7:
-                LogUtils.e("-->");
                 startActivity(new Intent(this,Main2Activity.class));
                 break;
         }
@@ -138,9 +137,12 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button7:
-                LogUtils.e("<--");
                 break;
         }
         return true;
     }
+
+
+
+
 }

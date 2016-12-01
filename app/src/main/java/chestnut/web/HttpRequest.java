@@ -17,7 +17,6 @@ import rx.Observable;
 /**
  * Created by Chestnut on 2016/11/30.
  */
-
 public class HttpRequest implements Http{
 
     private static HttpRequest httpRequest = new HttpRequest();
@@ -46,7 +45,7 @@ public class HttpRequest implements Http{
             StringRequest stringRequest = new StringRequest(
                     Request.Method.POST,
                     url,
-                    s -> subscriber.onNext(s),
+                    subscriber::onNext,
                     volleyError -> subscriber.onError(new Throwable("RxPost-error:"+(volleyError==null?"null":volleyError.getMessage())))
             )
             {
@@ -71,7 +70,7 @@ public class HttpRequest implements Http{
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 url,
-                s -> callBack.onSuccess(s),
+                callBack::onSuccess,
                 volleyError -> callBack.onFailure("Post-error:"+(volleyError==null?"null":volleyError.getMessage()))
         )
         {
