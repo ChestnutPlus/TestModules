@@ -12,6 +12,7 @@ import java.util.Map;
 
 import chestnut.Interface.web.Http;
 import chestnut.Interface.web.HttpCallBack;
+import chestnut.utils.LogUtils;
 import rx.Observable;
 
 /**
@@ -76,6 +77,7 @@ public class HttpRequest implements Http{
         {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                LogUtils.e("");
                 return map;
             }
         };
