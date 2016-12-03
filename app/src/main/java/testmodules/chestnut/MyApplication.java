@@ -6,6 +6,7 @@ import android.app.Application;
 import chestnut.utils.CrashUtils;
 import chestnut.utils.LogUtils;
 import chestnut.utils.SPUtils;
+import chestnut.web.HttpRequest;
 
 /**
  * Created by Chestnut on 2016/8/31.
@@ -18,5 +19,6 @@ public class MyApplication extends Application{
         CrashUtils.getInstance().init(this);
         LogUtils.init(this);
         SPUtils.getInstance().init(this,"My");
+        HttpRequest.getInstance().init();
     }
 }
