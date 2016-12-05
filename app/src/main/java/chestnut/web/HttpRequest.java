@@ -77,7 +77,7 @@ public class HttpRequest implements Http{
         {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                LogUtils.e("");
+
                 return map;
             }
         };
