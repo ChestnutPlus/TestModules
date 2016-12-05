@@ -1,7 +1,5 @@
 package chestnut.Interface.web;
 
-import java.util.Map;
-
 import rx.Observable;
 
 /**
@@ -15,9 +13,17 @@ import rx.Observable;
  *     updateLog：
  * </pre>
  */
-public interface Http {
-    Observable<String> RxGet(String url, Map<String,String> map);
-    Observable<String> RxPost(String url, Map<String,String> map);
-    void Get(String url, Map<String,String> map, HttpCallBack callBack);
-    void Post(String url, Map<String,String> map, HttpCallBack callBack);
+/**
+ *  Http请求接口
+ * @param <CallBack>    回调接口
+ * @param <HttpParam>   传入的参数
+ * @param <HttpResult>  Rx返回的结果
+ */
+public interface Http<CallBack,HttpParam,HttpResult> {
+    Observable<HttpResult> RxGet(String url, HttpParam httpParam);
+    Observable<HttpResult> RxPost(String url, HttpParam httpParam);
+    Observable<String> RxPostFile(String url, HttpParam map, String fileName, String fileType, byte[] fileBytes);
+    void Get(String url, HttpParam httpParam, CallBack callBack);
+    void Post(String url, HttpParam httpParam, CallBack callBack);
+    void PostFile(String url, HttpParam map, String fileName, byte[] fileBytes, String fileType, CallBack callBack);
 }

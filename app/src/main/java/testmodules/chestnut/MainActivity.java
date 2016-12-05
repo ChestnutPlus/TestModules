@@ -13,12 +13,17 @@ import android.widget.Toast;
 
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import chestnut.Interface.web.HttpCallBack;
 import chestnut.utils.AppUtils;
 import chestnut.utils.LogUtils;
+import chestnut.web.HttpRequest;
 import testmodules.R;
 import chestnut.ui.Toastc;
 
@@ -78,35 +83,80 @@ public class MainActivity extends RxAppCompatActivity {
         ((Button)activity.findViewById(R.id.button7)).setText(btnNames[6]);
     }
     private String[] btnNames = {
-            "1_"+"DialogActivity",
-            "2_"+"DialogNote",
+            "1_"+"get",
+            "2_"+"RxGet",
             "3_"+"ToastNote",
             "4_"+"DialogLoading",
             "5_"+"",
-            "6_"+"getBitmapFormUrl",
+            "6_"+"post",
             "7_"+"Main2Activity",
     };
 
     @OnClick({R.id.button1,R.id.button2,R.id.button3,R.id.button4,R.id.button5,R.id.button6,R.id.button7})
     public void btnClicks(Button button) {
+        Map<String,String> map = new HashMap<>();
+        map.put("1","2");
         switch (button.getId()) {
             case R.id.button1:
                 startActivity(new Intent(MainActivity.this,DialogActivity.class));
                 break;
 
             case R.id.button2:
+
+                HttpRequest.getInstance().Get("http://119.29.221.55/Test/TestGet.php", map, new HttpCallBack() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogUtils.e("onSuccess:"+result);
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        LogUtils.e("onFailure:"+msg);
+                    }
+                });
                 break;
 
             case R.id.button3:
+
+                HttpRequest.getInstance().RxGet("http://119.29.221.55/Test/TestGet.php",map)
+                        .subscribe(
+                                s -> {
+                                    LogUtils.e("onSuccess:"+s);
+                                },
+                                throwable -> {
+                                    LogUtils.e("onFailure:"+throwable.getMessage());
+                                });
+
                 break;
 
             case R.id.button4:
                 break;
 
             case R.id.button5:
+                HttpRequest.getInstance().RxPost("http://119.29.221.55/Test/TestGet.php",map)
+                        .subscribe(
+                                s -> {
+                                    LogUtils.e("onSuccess:"+s);
+                                },
+                                throwable -> {
+                                    LogUtils.e("onFailure:"+throwable.getMessage());
+                                });
                 break;
 
             case R.id.button6:
+
+                HttpRequest.getInstance().Post("http://119.29.221.55/Test/TestPost.php", null, new HttpCallBack() {
+                    @Override
+                    public void onSuccess(String result) {
+                        LogUtils.e("onSuccess:"+result);
+                    }
+
+                    @Override
+                    public void onFailure(String msg) {
+                        LogUtils.e("onFailure:"+msg);
+                    }
+                });
+
                 break;
 
             case R.id.button7:

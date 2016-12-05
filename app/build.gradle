@@ -50,4 +50,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
     testCompile 'junit:junit:4.12'
     compile project(path: ':toolslibrary')
+    compile 'com.trello:rxlifecycle:0.8.0'
+    compile 'com.trello:rxlifecycle-components:0.8.0'
+    compile files('libs/okhttp-3.5.0.jar')
+    compile files('libs/okio-1.11.0.jar')
 }
