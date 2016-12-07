@@ -17,6 +17,7 @@ import android.view.View;
 
 import static chestnut.utils.ConvertUtils.px2dp;
 
+
 /**
  * <pre>
  *     author: Chestnut
@@ -31,9 +32,6 @@ import static chestnut.utils.ConvertUtils.px2dp;
  */
 public class ScreenUtils {
 
-    private static int screenWidth = -1;
-    private static int screenHeight = -1;
-
     private ScreenUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
@@ -45,13 +43,9 @@ public class ScreenUtils {
      * @return 屏幕宽px
      */
     public static int getScreenWidth_PX(Context context) {
-        if (screenHeight==-1) {
-            Resources resources = context.getResources();
-            DisplayMetrics dm = resources.getDisplayMetrics();
-            screenWidth = dm.widthPixels;
-            screenHeight = dm.heightPixels;
-        }
-        return screenWidth;
+        Resources resources = context.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        return dm.widthPixels;
     }
 
     /**
@@ -61,13 +55,9 @@ public class ScreenUtils {
      * @return 屏幕高px
      */
     public static int getScreenHeight_PX(Context context) {
-        if (screenHeight==-1) {
-            Resources resources = context.getResources();
-            DisplayMetrics dm = resources.getDisplayMetrics();
-            screenWidth = dm.widthPixels;
-            screenHeight = dm.heightPixels;
-        }
-        return screenHeight;
+        Resources resources = context.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        return dm.heightPixels;
     }
 
     /**
@@ -77,13 +67,9 @@ public class ScreenUtils {
      * @return 屏幕宽dp
      */
     public static int getScreenWidth_Dip(Context context) {
-        if (screenWidth==-1) {
-            Resources resources = context.getResources();
-            DisplayMetrics dm = resources.getDisplayMetrics();
-            screenWidth = dm.widthPixels;
-            screenHeight = dm.heightPixels;
-        }
-        return px2dp(context,screenWidth);
+        Resources resources = context.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        return px2dp(context,dm.widthPixels);
     }
 
     /**
@@ -93,13 +79,9 @@ public class ScreenUtils {
      * @return 屏幕高dp
      */
     public static int getScreenHeight_Dip(Context context) {
-        if (screenWidth==-1) {
-            Resources resources = context.getResources();
-            DisplayMetrics dm = resources.getDisplayMetrics();
-            screenWidth = dm.widthPixels;
-            screenHeight = dm.heightPixels;
-        }
-        return px2dp(context,screenHeight);
+        Resources resources = context.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        return px2dp(context,dm.heightPixels);
     }
 
     /**
