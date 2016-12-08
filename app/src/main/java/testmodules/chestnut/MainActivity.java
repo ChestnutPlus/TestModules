@@ -4,41 +4,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.lang.ref.WeakReference;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import chestnut.Interface.web.HttpCallBack;
-import chestnut.rx.RxBus;
-import chestnut.rx.RxEvent;
 import chestnut.utils.AppUtils;
 import chestnut.utils.EncryptUtils;
-import chestnut.utils.FileUtils;
 import chestnut.utils.LogUtils;
-import chestnut.utils.SDCardUtils;
 import chestnut.utils.StringUtils;
-import chestnut.utils.TimeUtils;
-import chestnut.web.HttpRequest;
 import testmodules.R;
 import chestnut.ui.Toastc;
 
@@ -49,16 +32,20 @@ public class MainActivity extends RxAppCompatActivity {
     ImageView imageView;
 
     private Context context = null;
-    private Handler handler = new Handler() {
+    private static class MyHandler extends Handler {
+        private WeakReference<MainActivity> mActivity;
+        MyHandler(MainActivity mActivity) {
+            this.mActivity = new WeakReference<>(mActivity);
+        }
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
             switch (msg.what) {
                 case 0x01:
                     break;
             }
         }
-    };
+    }
+    private MyHandler myHandler = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +55,7 @@ public class MainActivity extends RxAppCompatActivity {
         toast = new Toastc(this, Toast.LENGTH_SHORT);
         initView(this);
         context = this;
+        myHandler = new MyHandler(this);
     }
     @Override
     protected void onPause() {
@@ -85,7 +73,17 @@ public class MainActivity extends RxAppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        AppUtils.pressTwiceExitApp(this);
+        AppUtils.pressTwiceExitApp(this, "王尼玛你要退出！？", 3000, new AppUtils.ExitAppCallBack() {
+            @Override
+            public void firstAsk() {
+                LogUtils.e("firstAsk");
+            }
+
+            @Override
+            public void beginExit() {
+                LogUtils.e("beginExit");
+            }
+        });
     }
 
     private void initView(Activity activity) {
@@ -115,10 +113,6 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button2:
-
-                String pswSha1 = StringUtils.changeTOLowerCase(EncryptUtils.encryptSHA1ToString("2664"));
-                LogUtils.e("--->",pswSha1);
-
                 break;
 
             case R.id.button3:
