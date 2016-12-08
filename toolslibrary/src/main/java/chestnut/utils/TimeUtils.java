@@ -208,6 +208,29 @@ public class TimeUtils {
     }
 
     /**
+     * 将时间戳转为时间字符串
+     * <p>格式为yyyy-MM-dd HH:mm:ss</p>
+     *
+     * @param seconds 秒时间戳
+     * @return 时间字符串
+     */
+    public static String seconds2String(long seconds) {
+        return seconds2String(seconds, DEFAULT_SDF);
+    }
+
+    /**
+     * 将时间戳转为时间字符串
+     * <p>格式为用户自定义</p>
+     *
+     * @param seconds 秒时间戳
+     * @param format       时间格式
+     * @return 时间字符串
+     */
+    public static String seconds2String(long seconds, SimpleDateFormat format) {
+        return format.format(new Date(seconds*1000L));
+    }
+
+    /**
      * 将时间字符串转为时间戳
      * <p>格式为yyyy-MM-dd HH:mm:ss</p>
      *

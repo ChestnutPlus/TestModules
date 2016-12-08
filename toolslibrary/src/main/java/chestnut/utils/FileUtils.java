@@ -1047,20 +1047,22 @@ public class FileUtils {
      * 获取文件的MD5校验码
      *
      * @param filePath 文件
+     * @param isUpper true:大写，false：小写。
      * @return 文件的MD5校验码
      */
-    public static String getFileMD5(String filePath) {
-        return getFileMD5(getFileByPath(filePath));
+    public static String getFileMD5(String filePath, boolean isUpper) {
+        return getFileMD5(getFileByPath(filePath),isUpper);
     }
 
     /**
      * 获取文件的MD5校验码
      *
+     * @param isUpper true:大写，false：小写。
      * @param file 文件
      * @return 文件的MD5校验码
      */
-    public static String getFileMD5(File file) {
-        return EncryptUtils.encryptMD5File2String(file);
+    public static String getFileMD5(File file, boolean isUpper) {
+        return isUpper ? EncryptUtils.encryptMD5File2String(file) : StringUtils.changeTOLowerCase(EncryptUtils.encryptMD5File2String(file));
     }
 
     /**

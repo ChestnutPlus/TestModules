@@ -58,6 +58,11 @@ public class LogUtils {
     /****************************
      * Warn
      *********************************/
+    public static void w(boolean isOpen, String tag, String msg) {
+        if (isOpen)
+            w(tag, msg, null);
+    }
+
     public static void w(String msg) {
         w(LOG_TAG, msg);
     }
@@ -67,31 +72,35 @@ public class LogUtils {
     }
 
     public static void w(String tag, String msg, Throwable tr) {
-        log(tag, msg.toString(), tr, 'w');
+        log(tag, msg, tr, 'w');
     }
 
     public static void wD(String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(),LogUtils.class);
-        log(msg.toString(),'w',thread,stackTraceElement);
-        return;
+        log(msg,'w',thread,stackTraceElement);
     }
 
     public static void wToFile(String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
-        log2File(thread,stackTraceElement,'W',LOG_TAG,msg.toString());
+        log2File(thread,stackTraceElement,'W',LOG_TAG, msg);
     }
 
     public static void wToFile(String tag, String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
-        log2File(thread,stackTraceElement,'W',tag,msg.toString());
+        log2File(thread,stackTraceElement,'W',tag, msg);
     }
 
     /***************************
      * Error
      ********************************/
+    public static void e(boolean isOpen, String tag, String msg) {
+        if (isOpen)
+            e(tag, msg, null);
+    }
+
     public static void e(String msg) {
         e(LOG_TAG, msg);
     }
@@ -101,31 +110,35 @@ public class LogUtils {
     }
 
     public static void e(String tag, String msg, Throwable tr) {
-        log(tag, msg.toString(), tr, 'e');
+        log(tag, msg, tr, 'e');
     }
 
     public static void eD(String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(),LogUtils.class);
-        log(msg.toString(),'e',thread,stackTraceElement);
-        return;
+        log(msg,'e',thread,stackTraceElement);
     }
 
     public static void eToFile(String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
-        log2File(thread,stackTraceElement,'E',LOG_TAG,msg.toString());
+        log2File(thread,stackTraceElement,'E',LOG_TAG, msg);
     }
 
     public static void eToFile(String tag, String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
-        log2File(thread,stackTraceElement,'E',tag,msg.toString());
+        log2File(thread,stackTraceElement,'E',tag, msg);
     }
 
     /***************************
      * Debug
      ********************************/
+    public static void d(boolean isOpen, String tag, String msg) {
+        if (isOpen)
+            d(tag, msg, null);
+    }
+
     public static void d(String msg) {
         d(LOG_TAG, msg);
     }
@@ -135,31 +148,35 @@ public class LogUtils {
     }
 
     public static void d(String tag, String msg, Throwable tr) {
-        log(tag, msg.toString(), tr, 'd');
+        log(tag, msg, tr, 'd');
     }
 
     public static void dD(String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(),LogUtils.class);
-        log(msg.toString(),'d',thread,stackTraceElement);
-        return;
+        log(msg,'d',thread,stackTraceElement);
     }
 
     public static void dToFile(String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
-        log2File(thread,stackTraceElement,'D',LOG_TAG,msg.toString());
+        log2File(thread,stackTraceElement,'D',LOG_TAG, msg);
     }
 
     public static void dToFile(String tag, String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
-        log2File(thread,stackTraceElement,'D',tag,msg.toString());
+        log2File(thread,stackTraceElement,'D',tag, msg);
     }
 
     /****************************
      * Info
      *********************************/
+    public static void i(boolean isOpen, String tag, String msg) {
+        if (isOpen)
+            i(tag, msg, null);
+    }
+
     public static void i(String msg) {
         i(LOG_TAG, msg);
     }
@@ -169,31 +186,35 @@ public class LogUtils {
     }
 
     public static void i(String tag, String msg, Throwable tr) {
-        log(tag, msg.toString(), tr, 'i');
+        log(tag, msg, tr, 'i');
     }
 
     public static void iD(String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(),LogUtils.class);
-        log(msg.toString(),'i',thread,stackTraceElement);
-        return;
+        log(msg,'i',thread,stackTraceElement);
     }
 
     public static void iToFile(String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
-        log2File(thread,stackTraceElement,'I',LOG_TAG,msg.toString());
+        log2File(thread,stackTraceElement,'I',LOG_TAG, msg);
     }
 
     public static void iToFile(String tag, String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
-        log2File(thread,stackTraceElement,'I',tag,msg.toString());
+        log2File(thread,stackTraceElement,'I',tag, msg);
     }
 
     /**************************
      * Verbose
      ********************************/
+    public static void v(boolean isOpen, String tag, String msg) {
+        if (isOpen)
+            v(tag, msg, null);
+    }
+
     public static void v(String msg) {
         v(LOG_TAG, msg);
     }
@@ -203,26 +224,25 @@ public class LogUtils {
     }
 
     public static void v(String tag, String msg, Throwable tr) {
-        log(tag, msg.toString(), tr, 'v');
+        log(tag, msg, tr, 'v');
     }
 
     public static void vD(String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(),LogUtils.class);
-        log(msg.toString(),'v',thread,stackTraceElement);
-        return;
+        log(msg,'v',thread,stackTraceElement);
     }
 
     public static void vToFile(String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
-        log2File(thread,stackTraceElement,'V',LOG_TAG,msg.toString());
+        log2File(thread,stackTraceElement,'V',LOG_TAG, msg);
     }
 
     public static void vToFile(String tag, String msg) {
         Thread thread = Thread.currentThread();
         StackTraceElement stackTraceElement = getCurrentStack(thread.getStackTrace(), LogUtils.class);
-        log2File(thread,stackTraceElement,'V',tag,msg.toString());
+        log2File(thread,stackTraceElement,'V',tag, msg);
     }
 
     /**

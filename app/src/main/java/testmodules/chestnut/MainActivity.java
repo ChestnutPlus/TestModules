@@ -6,24 +6,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.ref.WeakReference;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import chestnut.Interface.web.HttpCallBack;
 import chestnut.utils.AppUtils;
+import chestnut.utils.EncryptUtils;
 import chestnut.utils.LogUtils;
-import chestnut.web.HttpRequest;
+import chestnut.utils.StringUtils;
 import testmodules.R;
 import chestnut.ui.Toastc;
 
@@ -34,16 +32,20 @@ public class MainActivity extends RxAppCompatActivity {
     ImageView imageView;
 
     private Context context = null;
-    private Handler handler = new Handler() {
+    private static class MyHandler extends Handler {
+        private WeakReference<MainActivity> mActivity;
+        MyHandler(MainActivity mActivity) {
+            this.mActivity = new WeakReference<>(mActivity);
+        }
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
             switch (msg.what) {
                 case 0x01:
                     break;
             }
         }
-    };
+    }
+    private MyHandler myHandler = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class MainActivity extends RxAppCompatActivity {
         toast = new Toastc(this, Toast.LENGTH_SHORT);
         initView(this);
         context = this;
+        myHandler = new MyHandler(this);
     }
     @Override
     protected void onPause() {
@@ -70,7 +73,17 @@ public class MainActivity extends RxAppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        AppUtils.pressTwiceExitApp(this);
+        AppUtils.pressTwiceExitApp(this, "王尼玛你要退出！？", 3000, new AppUtils.ExitAppCallBack() {
+            @Override
+            public void firstAsk() {
+                LogUtils.e("firstAsk");
+            }
+
+            @Override
+            public void beginExit() {
+                LogUtils.e("beginExit");
+            }
+        });
     }
 
     private void initView(Activity activity) {
@@ -94,69 +107,24 @@ public class MainActivity extends RxAppCompatActivity {
 
     @OnClick({R.id.button1,R.id.button2,R.id.button3,R.id.button4,R.id.button5,R.id.button6,R.id.button7})
     public void btnClicks(Button button) {
-        Map<String,String> map = new HashMap<>();
-        map.put("1","2");
         switch (button.getId()) {
             case R.id.button1:
                 startActivity(new Intent(MainActivity.this,DialogActivity.class));
                 break;
 
             case R.id.button2:
-
-                HttpRequest.getInstance().Get("http://119.29.221.55/Test/TestGet.php", map, new HttpCallBack() {
-                    @Override
-                    public void onSuccess(String result) {
-                        LogUtils.e("onSuccess:"+result);
-                    }
-
-                    @Override
-                    public void onFailure(String msg) {
-                        LogUtils.e("onFailure:"+msg);
-                    }
-                });
                 break;
 
             case R.id.button3:
-
-                HttpRequest.getInstance().RxGet("http://119.29.221.55/Test/TestGet.php",map)
-                        .subscribe(
-                                s -> {
-                                    LogUtils.e("onSuccess:"+s);
-                                },
-                                throwable -> {
-                                    LogUtils.e("onFailure:"+throwable.getMessage());
-                                });
-
                 break;
 
             case R.id.button4:
                 break;
 
             case R.id.button5:
-                HttpRequest.getInstance().RxPost("http://119.29.221.55/Test/TestGet.php",map)
-                        .subscribe(
-                                s -> {
-                                    LogUtils.e("onSuccess:"+s);
-                                },
-                                throwable -> {
-                                    LogUtils.e("onFailure:"+throwable.getMessage());
-                                });
                 break;
 
             case R.id.button6:
-
-                HttpRequest.getInstance().Post("http://119.29.221.55/Test/TestPost.php", null, new HttpCallBack() {
-                    @Override
-                    public void onSuccess(String result) {
-                        LogUtils.e("onSuccess:"+result);
-                    }
-
-                    @Override
-                    public void onFailure(String msg) {
-                        LogUtils.e("onFailure:"+msg);
-                    }
-                });
-
                 break;
 
             case R.id.button7:
@@ -191,8 +159,4 @@ public class MainActivity extends RxAppCompatActivity {
         }
         return true;
     }
-
-
-
-
 }

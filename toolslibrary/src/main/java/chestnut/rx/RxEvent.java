@@ -5,10 +5,10 @@ package chestnut.rx;
  */
 public class RxEvent {
 
-    public int receiveType;
-    public int eventType;
-    public String eventAction;  //
-    public Object event;        //事件体
+    private int receiveType;
+    private int eventType;
+    private String eventAction;  //
+    private Object event;        //事件体
 
     public RxEvent() {
     }

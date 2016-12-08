@@ -31,6 +31,7 @@ import static android.content.Context.ACTIVITY_SERVICE;
  *          StringUtils
  *          FileUtils
  *          CleanUtils
+ *          EmptyUtils
  * </pre>
  */
 public class AppUtils {
@@ -617,12 +618,20 @@ public class AppUtils {
     /**
      *      按两下退出app，要在 onBackPressed() 中调用
      */
+    public interface ExitAppCallBack {
+        void firstAsk();
+        void beginExit();
+    }
     private static long exitTime = 0;
-    public static void pressTwiceExitApp(Activity activity) {
-        if ((System.currentTimeMillis()-exitTime)>2000) {
-            Toast.makeText(activity, "再按一次退出程序...",Toast.LENGTH_SHORT).show();
+    public static void pressTwiceExitApp(Activity activity, String msg, long exitTimeMsSpace, ExitAppCallBack exitAppCallBack) {
+        if ((System.currentTimeMillis()-exitTime)>exitTimeMsSpace) {
+            Toast.makeText(activity, EmptyUtils.isEmpty(msg)?"再按一次退出程序...":msg,Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();
+            if (exitAppCallBack!=null)
+                exitAppCallBack.firstAsk();
         } else {
+            if (exitAppCallBack!=null)
+                exitAppCallBack.beginExit();
             activity.finish();
             exitApp(activity);
         }
