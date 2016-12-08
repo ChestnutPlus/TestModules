@@ -12,6 +12,7 @@ import android.widget.GridView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.trello.rxlifecycle.android.ActivityEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.io.IOException;
@@ -23,6 +24,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import chestnut.rx.RxBus;
+import chestnut.rx.RxEvent;
 import chestnut.ui.Toastc;
 import chestnut.utils.LogUtils;
 import testmodules.R;
@@ -120,14 +123,23 @@ public class Main2Activity extends RxAppCompatActivity {
 
     @OnClick(R.id.btn)
     public void btn(Button button) {
-        long temp = 96742038;
-        for (int i = 0; i < 8; i++) {
-            Message message = new Message();
-            message.what = 0x01;
-            message.arg1 = (int) (temp / Math.pow(10,7-i));
-            temp -= message.arg1 * Math.pow(10,7-i);
-            message.arg2 = i;
-            handler.sendMessageDelayed(message,600*(i));
-        }
+
+        RxBus.getDefault().toObserverable(RxEvent.class)
+                .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
+                .map(rxEvent -> {
+                    LogUtils.e("1:"+rxEvent.toString());
+                    return rxEvent.toString();
+                })
+                .subscribe();
+
+//        long temp = 96742038;
+//        for (int i = 0; i < 8; i++) {
+//            Message message = new Message();
+//            message.what = 0x01;
+//            message.arg1 = (int) (temp / Math.pow(10,7-i));
+//            temp -= message.arg1 * Math.pow(10,7-i);
+//            message.arg2 = i;
+//            handler.sendMessageDelayed(message,600*(i));
+//        }
     }
 }

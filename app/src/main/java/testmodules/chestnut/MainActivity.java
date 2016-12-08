@@ -18,7 +18,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -26,11 +29,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import chestnut.Interface.web.HttpCallBack;
+import chestnut.rx.RxBus;
+import chestnut.rx.RxEvent;
 import chestnut.utils.AppUtils;
 import chestnut.utils.EncryptUtils;
 import chestnut.utils.FileUtils;
 import chestnut.utils.LogUtils;
 import chestnut.utils.SDCardUtils;
+import chestnut.utils.StringUtils;
+import chestnut.utils.TimeUtils;
 import chestnut.web.HttpRequest;
 import testmodules.R;
 import chestnut.ui.Toastc;
@@ -108,6 +115,10 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button2:
+
+                String pswSha1 = StringUtils.changeTOLowerCase(EncryptUtils.encryptSHA1ToString("2664"));
+                LogUtils.e("--->",pswSha1);
+
                 break;
 
             case R.id.button3:
@@ -154,5 +165,4 @@ public class MainActivity extends RxAppCompatActivity {
         }
         return true;
     }
-
 }
