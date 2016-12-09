@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.lang.ref.WeakReference;
@@ -19,7 +20,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import chestnut.utils.AppUtils;
+import chestnut.utils.ConvertUtils;
 import chestnut.utils.EncryptUtils;
+import chestnut.utils.FileUtils;
 import chestnut.utils.LogUtils;
 import chestnut.utils.StringUtils;
 import testmodules.R;
@@ -113,6 +116,9 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button2:
+
+
+
                 break;
 
             case R.id.button3:

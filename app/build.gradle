@@ -7,7 +7,7 @@ android {
     buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "testmodules.chestnut"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -54,4 +54,5 @@ dependencies {
     compile 'com.trello:rxlifecycle-components:0.8.0'
     compile files('libs/okhttp-3.5.0.jar')
     compile files('libs/okio-1.11.0.jar')
+    compile files('libs/gson-2.2.4.jar')
 }

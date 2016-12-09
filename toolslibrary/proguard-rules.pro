@@ -19,7 +19,7 @@
 # Retrolambda
 -dontwarn java.lang.invoke.*
 
-# 模块中的内部类
+# 模块中的内部类 & RxEvent
 -keep class chestnut.media.Player$MediaInfo{ *; }
 -keep class chestnut.utils.AppUtils$AppInfo{ *; }
 -keep class chestnut.utils.ClipboardUtils$Type{ *; }
@@ -31,3 +31,5 @@
 -keep class chestnut.utils.SDCardUtils$SDCardInfo{ *; }
 -keep class chestnut.utils.ShellUtils$CommandResult{ *; }
 -keep class chestnut.utils.ThreadPoolUtils$Type{ *; }
+-keep class chestnut.rx.RxEvent{ *; }
+
