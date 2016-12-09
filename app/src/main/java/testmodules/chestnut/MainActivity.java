@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.lang.ref.WeakReference;
@@ -115,6 +116,9 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button2:
+
+
+
                 break;
 
             case R.id.button3:
