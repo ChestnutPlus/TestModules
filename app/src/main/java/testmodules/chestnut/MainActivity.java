@@ -11,9 +11,16 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.kymjs.rxvolley.RxVolley;
+import com.kymjs.rxvolley.client.HttpParams;
+import com.kymjs.rxvolley.rx.Result;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,10 +32,16 @@ import chestnut.utils.EncryptUtils;
 import chestnut.utils.FileUtils;
 import chestnut.utils.LogUtils;
 import chestnut.utils.StringUtils;
+import chestnut.web.HttpRequest;
+import rx.Observable;
+import rx.functions.Func1;
 import testmodules.R;
 import chestnut.ui.Toastc;
 
 public class MainActivity extends RxAppCompatActivity {
+
+    private final static String TAG = "MainActivity";
+    private final static boolean OpenLog = true;
 
     Toastc toast = null;
     @Bind(R.id.imageView)
@@ -117,6 +130,41 @@ public class MainActivity extends RxAppCompatActivity {
 
             case R.id.button2:
 
+                Integer[] a = {1,2,3,4,5};
+                List<Integer> list = new ArrayList<>();
+                list.add(1);
+                list.add(2);
+                list.add(3);
+                list.add(4);
+                list.add(5);
+                Observable.from(list)
+                        .map(integer -> {
+                            LogUtils.e(OpenLog,TAG,"map:"+integer);
+                            return integer;
+                        })
+                        .flatMap(new Func1<Integer, Observable<Result>>() {
+                            @Override
+                            public Observable<Result> call(Integer integer) {
+
+                                HttpParams httpParams = new HttpParams();
+                                httpParams.put("1","key");
+
+                                return new RxVolley.Builder()
+                                        .url("http://119.29.221.55/Test/TestPost.php")
+                                        .params(httpParams)
+                                        .httpMethod(RxVolley.Method.POST)
+                                        .getResult();
+//                                return HttpRequest
+//                                        .getInstance()
+//                                        .RxPost("http://119.29.221.55/Test/TestPost.php",new HashMap<>());
+                            }
+                        })
+                        .map(result -> new String(result.data))
+                        .subscribe(
+                                s -> LogUtils.e(OpenLog,TAG,"onNext"+s),
+                                throwable -> LogUtils.e(OpenLog,TAG,"throwable"+throwable.getMessage()),
+                                () -> LogUtils.e(OpenLog,TAG,"completed")
+                        );
 
 
                 break;
