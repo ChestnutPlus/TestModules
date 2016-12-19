@@ -10,33 +10,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.kymjs.rxvolley.RxVolley;
-import com.kymjs.rxvolley.client.HttpParams;
-import com.kymjs.rxvolley.rx.Result;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.ByteBuffer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import chestnut.utils.AppUtils;
-import chestnut.utils.ConvertUtils;
-import chestnut.utils.EncryptUtils;
-import chestnut.utils.FileUtils;
-import chestnut.utils.LogUtils;
-import chestnut.utils.StringUtils;
-import chestnut.web.HttpRequest;
-import rx.Observable;
-import rx.functions.Func1;
-import testmodules.R;
+import chestnut.RxSocket.RxSocket;
 import chestnut.ui.Toastc;
+import chestnut.utils.AppUtils;
+import chestnut.utils.LogUtils;
+import testmodules.R;
 
 public class MainActivity extends RxAppCompatActivity {
 
@@ -72,6 +59,12 @@ public class MainActivity extends RxAppCompatActivity {
         initView(this);
         context = this;
         myHandler = new MyHandler(this);
+
+        RxSocket.getInstance().socketStatusListener()
+                .subscribe(socketStatus -> {
+                    LogUtils.e(OpenLog,TAG,"socketStatusListener:"+socketStatus.name());
+                });
+
     }
     @Override
     protected void onPause() {
@@ -130,52 +123,44 @@ public class MainActivity extends RxAppCompatActivity {
 
             case R.id.button2:
 
-                Integer[] a = {1,2,3,4,5};
-                List<Integer> list = new ArrayList<>();
-                list.add(1);
-                list.add(2);
-                list.add(3);
-                list.add(4);
-                list.add(5);
-                Observable.from(list)
-                        .map(integer -> {
-                            LogUtils.e(OpenLog,TAG,"map:"+integer);
-                            return integer;
-                        })
-                        .flatMap(new Func1<Integer, Observable<Result>>() {
-                            @Override
-                            public Observable<Result> call(Integer integer) {
-
-                                HttpParams httpParams = new HttpParams();
-                                httpParams.put("1","key");
-
-                                return new RxVolley.Builder()
-                                        .url("http://119.29.221.55/Test/TestPost.php")
-                                        .params(httpParams)
-                                        .httpMethod(RxVolley.Method.POST)
-                                        .getResult();
-//                                return HttpRequest
-//                                        .getInstance()
-//                                        .RxPost("http://119.29.221.55/Test/TestPost.php",new HashMap<>());
-                            }
-                        })
-                        .map(result -> new String(result.data))
+                RxSocket.getInstance()
+                        .connectRx("192.168.191.1",8888)
                         .subscribe(
-                                s -> LogUtils.e(OpenLog,TAG,"onNext"+s),
-                                throwable -> LogUtils.e(OpenLog,TAG,"throwable"+throwable.getMessage()),
-                                () -> LogUtils.e(OpenLog,TAG,"completed")
-                        );
-
+                                aBoolean -> {
+                                    LogUtils.e(OpenLog,TAG,"connect:"+aBoolean);
+                                },
+                                throwable -> {
+                                    LogUtils.e(OpenLog,TAG,"connect:"+throwable.getMessage());
+                                });
 
                 break;
 
             case R.id.button3:
+
+                RxSocket.getInstance()
+                        .read()
+                        .subscribe(buffer -> {
+                            LogUtils.e(OpenLog,TAG,"read:"+(new String(buffer)));
+                        });
+
                 break;
 
             case R.id.button4:
+
+                byte[] hehe = new byte[]{
+                        1,
+                        2
+                };
+                RxSocket.getInstance()
+                        .write(ByteBuffer.wrap(hehe))
+                        .subscribe(aBoolean -> LogUtils.e(OpenLog,TAG,"write:"+aBoolean));
+
                 break;
 
             case R.id.button5:
+                RxSocket.getInstance()
+                        .disConnect()
+                        .subscribe(aBoolean -> LogUtils.e(OpenLog,TAG,"disConnect:"+aBoolean));
                 break;
 
             case R.id.button6:
