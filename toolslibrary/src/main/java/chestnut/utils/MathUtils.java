@@ -10,6 +10,10 @@ import java.util.ArrayList;
  *     desc  : Math相关工具类
  *     thanks To:
  *     dependent on:
+ *     update:
+ *            2016年12月22日11:45:31   栗子
+ *                  1. 增加方法：cutInt()    传入整数，分隔成一位一位
+ *                              countSize() 传入整数，得到位数
  * </pre>
  */
 public class MathUtils {
@@ -96,7 +100,32 @@ public class MathUtils {
         return (char) randomInt(48,59);
     }
 
-//    public static String randomStr(int num) {
-//
-//    }
+   /**
+    * 输入一个整数，分割其每一个位数
+    * @param num
+    * @return  返回一个数组，0-N代表1-N-1位
+    */
+    public static int[] cutInt(int num) {
+        int size = countSize(num);
+        int[] result = new int[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = num % 10;
+            num = num / 10;
+        }
+        return result;
+    }
+
+    /**
+     * 输入一个整数，判断其位数。
+     * @return
+     */
+    public static int countSize(int num) {
+        int i;
+        for (i = 1;; i++) {
+            num = num/10;
+            if (num==0)
+                break;
+        }
+        return i;
+    }
 }

@@ -32,4 +32,3 @@
 -keep class chestnut.utils.ShellUtils$CommandResult{ *; }
 -keep class chestnut.utils.ThreadPoolUtils$Type{ *; }
 -keep class chestnut.rx.RxEvent{ *; }
-
