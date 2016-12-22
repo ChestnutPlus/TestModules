@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Button;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,11 +35,6 @@ import chestnut.utils.StringUtils;
 import chestnut.web.HttpRequest;
 import rx.Observable;
 import rx.functions.Func1;
-import rx.functions.Func2;
-import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
-import rx.subjects.SerializedSubject;
-import rx.subjects.Subject;
 import testmodules.R;
 import chestnut.ui.Toastc;
 
@@ -69,7 +62,6 @@ public class MainActivity extends RxAppCompatActivity {
         }
     }
     private MyHandler myHandler = null;
-    private Map<String,String> map = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,35 +129,47 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button2:
-                Observable.just(map)
-                        .map(map -> {
-                            LogUtils.e(OpenLog,TAG,"size:"+map.size());
-                            int a = 0;
-                            int b = 7/a;
-                            return map;
+
+                Integer[] a = {1,2,3,4,5};
+                List<Integer> list = new ArrayList<>();
+                list.add(1);
+                list.add(2);
+                list.add(3);
+                list.add(4);
+                list.add(5);
+                Observable.from(list)
+                        .map(integer -> {
+                            LogUtils.e(OpenLog,TAG,"map:"+integer);
+                            return integer;
                         })
-                        .retry((integer, throwable) -> {
-                            if (map.size()>3)
-                                return false;
-                            LogUtils.e(OpenLog,TAG,"size:"+map.size());
-                            map.put("hehe","WangNiMa");
-                            return true;
+                        .flatMap(new Func1<Integer, Observable<Result>>() {
+                            @Override
+                            public Observable<Result> call(Integer integer) {
+
+                                HttpParams httpParams = new HttpParams();
+                                httpParams.put("1","key");
+
+                                return new RxVolley.Builder()
+                                        .url("http://119.29.221.55/Test/TestPost.php")
+                                        .params(httpParams)
+                                        .httpMethod(RxVolley.Method.POST)
+                                        .getResult();
+//                                return HttpRequest
+//                                        .getInstance()
+//                                        .RxPost("http://119.29.221.55/Test/TestPost.php",new HashMap<>());
+                            }
                         })
+                        .map(result -> new String(result.data))
                         .subscribe(
-                                map1 -> {
-                                    LogUtils.e(OpenLog,TAG,"onNext-size:"+map.size());
-                                },
-                                throwable -> {
-                                    LogUtils.e(OpenLog,TAG,"throwable-size:"+map.size());
-                                },
-                                () -> {
-                                    LogUtils.e(OpenLog,TAG,"ok-size:"+map.size());
-                                });
+                                s -> LogUtils.e(OpenLog,TAG,"onNext"+s),
+                                throwable -> LogUtils.e(OpenLog,TAG,"throwable"+throwable.getMessage()),
+                                () -> LogUtils.e(OpenLog,TAG,"completed")
+                        );
+
+
                 break;
 
             case R.id.button3:
-                map = new HashMap<>();
-                map.put("hehe","WangNiMa");
                 break;
 
             case R.id.button4:
