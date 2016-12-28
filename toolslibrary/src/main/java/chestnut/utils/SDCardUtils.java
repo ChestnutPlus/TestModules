@@ -20,6 +20,9 @@ import java.io.InputStreamReader;
  *     dependent on:
  *          FileUtils
  *          ConvertUtils
+ *     update:
+ *              2016年12月28日15:54:50     by  栗子
+ *                      1. 更新SDCardInfo内部类，把私有变量改成public
  * </pre>
  */
 public class SDCardUtils {
@@ -131,16 +134,16 @@ public class SDCardUtils {
     }
 
     public static class SDCardInfo {
-        boolean isExist;
-        long totalBlocks;
-        long freeBlocks;
-        long availableBlocks;
+        public boolean isExist;
+        public long totalBlocks;
+        public long freeBlocks;
+        public long availableBlocks;
 
-        long blockByteSize;
+        public long blockByteSize;
 
-        long totalBytes;
-        long freeBytes;
-        long availableBytes;
+        public long totalBytes;
+        public long freeBytes;
+        public long availableBytes;
 
         @Override
         public String toString() {
