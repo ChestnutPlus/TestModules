@@ -36,6 +36,13 @@ import static chestnut.utils.ConstUtils.KB;
  *           StringUtils
  *           ConvertUtils
  *           EncryptUtils
+ *     update :
+ *          2017年1月8日17:10:07   栗子
+ *              1. 新增方法：
+ *                      long getFileSizeByte(String filePath)       4.4 / 6.0
+ *                      long getFileSizeByte(File file)             4.4 / 6.0
+ *                      long getPathSizeByte(File file)             4.4 / 6.0
+ *                      long getPathSizeByte(String filePath)       4.4 / 6.0
  * </pre>
  */
 public class FileUtils {
@@ -1041,6 +1048,54 @@ public class FileUtils {
     public static String getFileSize(File file) {
         if (!isFileExists(file)) return "";
         return ConvertUtils.byte2FitSize(file.length());
+    }
+
+    /**
+     * 获取文件大小
+     *
+     * @param filePath 文件路径
+     * @return byte大小
+     */
+    public static long getFileSizeByte(String filePath) {
+        if (StringUtils.isEmpty(filePath)) return -1;
+        return getFileSizeByte(new File(filePath));
+    }
+
+    /**
+     * 获取文件大小
+     *
+     * @param file 文件
+     * @return byte大小
+     */
+    public static long getFileSizeByte(File file) {
+        if (!isFileExists(file)) return -1;
+        return file.length();
+    }
+
+    /**
+     * 获取目录的大小
+     *
+     * @param file
+     * @return
+     */
+    public static long getPathSizeByte(File file) {
+        List<File> files = listFilesInDir(file);
+        long size = 0;
+        for (File fileTemp :
+                files) {
+            size += fileTemp.length();
+        }
+        return size;
+    }
+
+    /**
+     * 获取目录的大小
+     *
+     * @param filePath
+     * @return
+     */
+    public static long getPathSizeByte(String filePath) {
+        return getPathSizeByte(new File(filePath));
     }
 
     /**

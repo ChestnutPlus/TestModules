@@ -16,7 +16,7 @@
 #   public *;
 #}
 
-# Retrolambda
+# Retrolambda - JDK8
 -dontwarn java.lang.invoke.*
 
 # 模块中的内部类 & RxEvent
@@ -32,3 +32,17 @@
 -keep class chestnut.utils.ShellUtils$CommandResult{ *; }
 -keep class chestnut.utils.ThreadPoolUtils$Type{ *; }
 -keep class chestnut.rx.RxEvent{ *; }
+
+# ---------------- Rx避免混淆 ------------
+# RxJava RxAndroid
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+    long producerIndex;
+    long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}

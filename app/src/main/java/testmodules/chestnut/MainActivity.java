@@ -10,16 +10,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.kymjs.rxvolley.RxVolley;
-import com.kymjs.rxvolley.client.HttpParams;
-import com.kymjs.rxvolley.rx.Result;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -28,14 +22,9 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import chestnut.utils.AppUtils;
 import chestnut.utils.ConvertUtils;
-import chestnut.utils.EncryptUtils;
 import chestnut.utils.FileUtils;
 import chestnut.utils.LogUtils;
 import chestnut.utils.SDCardUtils;
-import chestnut.utils.StringUtils;
-import chestnut.web.HttpRequest;
-import rx.Observable;
-import rx.functions.Func1;
 import testmodules.R;
 import chestnut.ui.Toastc;
 
@@ -122,6 +111,8 @@ public class MainActivity extends RxAppCompatActivity {
             "7_"+"Main2Activity",
     };
 
+    Map<String,String> map = new HashMap<>();
+
     @OnClick({R.id.button1,R.id.button2,R.id.button3,R.id.button4,R.id.button5,R.id.button6,R.id.button7})
     public void btnClicks(Button button) {
         switch (button.getId()) {
@@ -130,7 +121,6 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button2:
-
                 break;
 
             case R.id.button3:
@@ -146,7 +136,7 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button7:
-                startActivity(new Intent(this,Main2Activity.class));
+                startActivity(new Intent(this,DialogActivity.class));
                 break;
         }
     }
