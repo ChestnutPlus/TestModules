@@ -21,6 +21,10 @@ import static chestnut.utils.LogUtils.Config.*;
  *     desc  :  日志输出：logcat && 文件日志
  *     thanks To:
  *     dependent on:
+ *     update：
+ *          2017年1月8日20:02:25   栗子
+ *              1. 修复 log 方法：String 为 null 的时候，会崩溃的 bug
+ *              2. 同上：log2File
  * </pre>
  */
 public class LogUtils {
@@ -253,6 +257,8 @@ public class LogUtils {
      * @param stackTraceElement
      */
     private static void log(String msg, char logLevel, Thread thread, StackTraceElement stackTraceElement) {
+        if (msg==null)
+            msg = "null";
         if (LOG_SWITCH) {
             String x = stackTraceElement.toString();
             int indexOf = x.indexOf("(");
@@ -284,6 +290,8 @@ public class LogUtils {
      * @param level
      */
     private static void log(String tag, String msg, Throwable tr, char level) {
+        if (tag==null)
+            tag = "TAG";
         if (LOG_SWITCH) {
             if ('e' == level && ('e' == LOG_TYPE || 'v' == LOG_TYPE)) { // 输出错误信息
                 Log.e(tag, msg, tr);
@@ -310,10 +318,12 @@ public class LogUtils {
             char level,
             String tag,
             String text) {
-
         if (!LOG_TO_FILE)
             return;
-
+        if (text==null)
+            text="null";
+        if (tag==null)
+            tag = "TAG";
         Date nowTime = new Date();
         String date = FILE_SUFFIX.format(nowTime);
 
