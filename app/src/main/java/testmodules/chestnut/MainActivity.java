@@ -1,11 +1,17 @@
 package testmodules.chestnut;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -13,8 +19,10 @@ import android.widget.Toast;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.lang.ref.WeakReference;
+import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,6 +33,10 @@ import chestnut.utils.ConvertUtils;
 import chestnut.utils.FileUtils;
 import chestnut.utils.LogUtils;
 import chestnut.utils.SDCardUtils;
+import rx.Observable;
+import rx.Subscriber;
+import rx.Subscription;
+import testmodules.ArrowView;
 import testmodules.R;
 import chestnut.ui.Toastc;
 
@@ -36,6 +48,8 @@ public class MainActivity extends RxAppCompatActivity {
     Toastc toast = null;
     @Bind(R.id.imageView)
     ImageView imageView;
+    @Bind(R.id.ArrowView)
+    ArrowView arrowView;
 
     private Context context = null;
     private static class MyHandler extends Handler {
@@ -111,7 +125,7 @@ public class MainActivity extends RxAppCompatActivity {
             "7_"+"Main2Activity",
     };
 
-    Map<String,String> map = new HashMap<>();
+    AlphaAnimation alphaAnimation = null;
 
     @OnClick({R.id.button1,R.id.button2,R.id.button3,R.id.button4,R.id.button5,R.id.button6,R.id.button7})
     public void btnClicks(Button button) {
@@ -121,15 +135,46 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button2:
+                arrowView.startAnim();
                 break;
 
             case R.id.button3:
+                arrowView.stopAnim();
                 break;
 
             case R.id.button4:
+                alphaAnimation = new AlphaAnimation(1.0f,0.0f);
+                alphaAnimation.setRepeatCount(1);
+                alphaAnimation.setRepeatMode(Animation.REVERSE);
+                alphaAnimation.setDuration(1000);
+                alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        LogUtils.i(OpenLog,TAG,"onAnimationStart.");
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        if (animation!=null)
+                            arrowView.startAnimation(animation);
+                        LogUtils.i(OpenLog,TAG,"onAnimationEnd.");
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                arrowView.startAnimation(alphaAnimation);
                 break;
 
             case R.id.button5:
+                if (alphaAnimation!=null) {
+                    LogUtils.i(OpenLog,TAG,"end.");
+                    arrowView.clearAnimation();
+                    alphaAnimation.cancel();
+                    alphaAnimation = null;
+                }
                 break;
 
             case R.id.button6:
