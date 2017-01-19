@@ -7,19 +7,19 @@
     <View
         android:id="@+id/arrow_1"
         android:background="@drawable/arrow_up"
-        android:layout_width="70dp"
-        android:layout_height="20dp" />
+        android:layout_width="25dp"
+        android:layout_height="8dp" />
 
     <View
         android:id="@+id/arrow_2"
         android:background="@drawable/arrow_up"
-        android:layout_width="70dp"
-        android:layout_height="20dp" />
+        android:layout_width="25dp"
+        android:layout_height="8dp" />
 
     <View
         android:id="@+id/arrow_3"
         android:background="@drawable/arrow_up"
-        android:layout_width="70dp"
-        android:layout_height="20dp" />
+        android:layout_width="25dp"
+        android:layout_height="8dp" />
 
 </LinearLayout>
