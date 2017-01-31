@@ -18,11 +18,16 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import chestnut.ui.DialogLoading;
+import chestnut.ui.DialogNote;
+import chestnut.ui.Toastc;
 import chestnut.utils.AppUtils;
 import chestnut.utils.LogUtils;
+import rx.Observable;
+import rx.Subscriber;
 import testmodules.ArrowView;
 import testmodules.R;
-import chestnut.ui.Toastc;
+import testmodules.WeChatUtils;
 
 public class MainActivity extends RxAppCompatActivity {
 
@@ -36,6 +41,8 @@ public class MainActivity extends RxAppCompatActivity {
     ArrowView arrowView;
 
     private Context context = null;
+    private DialogLoading dialogLoading;
+    private DialogNote dialogNote;
     private static class MyHandler extends Handler {
         private WeakReference<MainActivity> mActivity;
         MyHandler(MainActivity mActivity) {
@@ -60,6 +67,8 @@ public class MainActivity extends RxAppCompatActivity {
         initView(this);
         context = this;
         myHandler = new MyHandler(this);
+        dialogLoading = new DialogLoading(this);
+        dialogNote = new DialogNote(this);
     }
     @Override
     protected void onPause() {
@@ -109,6 +118,27 @@ public class MainActivity extends RxAppCompatActivity {
             "7_"+"Main2Activity",
     };
 
+    private Observable<String> observable1 = Observable.create(new Observable.OnSubscribe<String>() {
+        @Override
+        public void call(Subscriber<? super String> subscriber) {
+            subscriber.onNext("observable1");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            subscriber.onCompleted();
+        }
+    });
+
+    private Observable<String> observable2 = Observable.create(new Observable.OnSubscribe<String>() {
+        @Override
+        public void call(Subscriber<? super String> subscriber) {
+            subscriber.onNext("observable2");
+            subscriber.onCompleted();
+        }
+    });
+
     @OnClick({R.id.button1,R.id.button2,R.id.button3,R.id.button4,R.id.button5,R.id.button6,R.id.button7})
     public void btnClicks(Button button) {
         switch (button.getId()) {
@@ -117,22 +147,28 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button2:
+                WeChatUtils weChatUtils = new WeChatUtils(this,"wxc7dd48aa3239f58f");
+                weChatUtils.sharedTxt(WeChatUtils.FLAG_SESSION,"wagnnimjflsdjlkf");
                 break;
 
             case R.id.button3:
+                dialogNote.showCorrect("correct");
                 break;
 
             case R.id.button4:
+                dialogNote.showWrong("wrong");
                 break;
 
             case R.id.button5:
+                dialogNote.showError("error");
                 break;
 
             case R.id.button6:
+                dialogNote.showNote("note");
                 break;
 
             case R.id.button7:
-                startActivity(new Intent(this,DialogActivity.class));
+                startActivity(new Intent(this,WebActivity.class));
                 break;
         }
     }

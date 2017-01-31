@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".chestnut.MyApplication"
@@ -32,12 +33,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".chestnut.Main2Activity" />
-
-        <activity android:name=".chestnut.DialogActivity"
+        <activity
+            android:name=".chestnut.DialogActivity"
             android:theme="@style/DialogTransparent" />
-
+        <activity android:name=".chestnut.WebActivity"></activity>
     </application>
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

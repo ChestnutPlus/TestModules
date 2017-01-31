@@ -2,7 +2,6 @@ package chestnut.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -11,23 +10,30 @@ import android.widget.TextView;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
+import rx.Subscriber;
 import testiflytek.test.chestnut.toolslibrary.R;
 
 /**
- * Created by Chestnut on 2016/10/30.
+ * <pre>
+ *     author: Chestnut
+ *     blog  :
+ *     time  : 2016年10月20日16:28:09
+ *     desc  : DialogLoading
+ *     thanks To:
+ *     dependent on:
+ *     updateLog：
+ *          1.0.0   初始化
+ *          1.0.1   2017年1月31日23:36:02  by  栗子
+ *                  1.  删除一些方法
+ *                  2.  新增Rx订阅版的ShowLoading
+ * </pre>
  */
 
 public class DialogLoading {
 
     private Dialog dialog = null;
     private TextView dialogTxt = null;
-    private static Subscription subscription = null;
     private LinearLayout linearLayout = null;
-
-    public DialogLoading() {
-    }
 
     /**
      * 传入Activity初始化
@@ -45,60 +51,39 @@ public class DialogLoading {
     }
 
     /**
-     * 显示Loading
-     * @param text  文字
-     * @param cancelable   loading是否能取消
-     * @param autoDismissTime   loading自动取消时间，单位：秒，传入-1/0表示无限时间
+     * Rx监听Loading
+     * @param text  msg
+     * @param outSideCancel     点击外部是否能取消
+     * @param backPressCancel   点击返回键是否能取消
+     * @param autoDismissTime   超时时间/   小于零默认无限，单位毫秒
+     * @return  Observable<Integer> -1 超时，1 用户点击退出。
      */
-    public void show(String text,boolean cancelable,int autoDismissTime) {
+    public Observable<Integer> rxShow(String text,boolean outSideCancel, boolean backPressCancel,int autoDismissTime) {
         linearLayout.setBackgroundResource(R.drawable.toast_bg);
         dialogTxt.setText(text);
-        dialog.setCanceledOnTouchOutside(cancelable);
-        dialog.setCancelable(cancelable);
+        dialog.setCanceledOnTouchOutside(outSideCancel);
+        dialog.setCancelable(backPressCancel);
         dialog.show();
-        if (subscription!=null)
-            subscription.unsubscribe();
-        if (autoDismissTime>0) {
-            Observable observable = Observable.timer(autoDismissTime, TimeUnit.SECONDS);
-            subscription = observable.observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(o -> {
-                        if (dialog.isShowing())
-                            dialog.dismiss();
+        if (autoDismissTime>0)
+            return Observable.create(new Observable.OnSubscribe<Integer>() {
+                @Override
+                public void call(Subscriber<? super Integer> subscriber) {
+                    dialog.setOnCancelListener(dialogInterface -> {
+                        subscriber.onNext(1);
+                        subscriber.onCompleted();
+                        dialog.dismiss();
                     });
-        }
-    }
-
-    /**
-     * 显示Loading，没有背景和文字。
-     * @param cancelable 能否点击取消
-     * @param autoDismissTime loading自动取消时间，单位：秒，传入-1/0表示无限时间
-     */
-    public void showWithoutBg(boolean cancelable,int autoDismissTime) {
-        linearLayout.setBackgroundColor(Color.TRANSPARENT);
-        dialogTxt.setText("");
-        dialog.setCanceledOnTouchOutside(cancelable);
-        dialog.setCancelable(cancelable);
-        dialog.show();
-        if (subscription!=null)
-            subscription.unsubscribe();
-        if (autoDismissTime>0) {
-            Observable observable = Observable.timer(autoDismissTime, TimeUnit.SECONDS);
-            subscription = observable.observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(o -> {
-                        if (dialog.isShowing())
-                            dialog.dismiss();
-                    });
-        }
-    }
-
-    /**
-     * 取消Loading
-     */
-    public void dismiss() {
-        if (subscription!=null)
-            subscription.unsubscribe();
-        dialogTxt.setText("");
-        if (dialog.isShowing())
-            dialog.dismiss();
+                }
+            }).timeout(autoDismissTime, TimeUnit.MILLISECONDS,
+                    Observable.just(-1).map(integer -> {
+                        dialog.dismiss();
+                        return integer;
+                    }));
+        else
+            return Observable.create(subscriber -> dialog.setOnCancelListener(dialogInterface -> {
+                subscriber.onNext(1);
+                subscriber.onCompleted();
+                dialog.dismiss();
+            }));
     }
 }

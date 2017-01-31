@@ -11,7 +11,18 @@ import android.widget.TextView;
 import testiflytek.test.chestnut.toolslibrary.R;
 
 /**
- * Created by Chestnut on 2016/10/30.
+ * <pre>
+ *     author: Chestnut
+ *     blog  :
+ *     time  : 2016年10月20日16:28:09
+ *     desc  : DialogNote
+ *     thanks To:
+ *     dependent on:
+ *     updateLog：
+ *          1.0.0   初始化
+ *          1.0.1   2017年1月31日23:36:02  by  栗子
+ *                  1.  删除一类型的传入的方法 和 枚举
+ * </pre>
  */
 
 public class DialogNote {
@@ -21,12 +32,6 @@ public class DialogNote {
     private Button button = null;
     private TextView textView = null;
     private ImageView imageView = null;
-    private enum NoteType {
-        Correct,
-        Error,
-        Note,
-        Wrong,
-    }
 
     /**
      * 构造器
@@ -55,10 +60,10 @@ public class DialogNote {
      * @param msg       信息
      * @param type      类型
      */
-    private void show(String msg,NoteType type) {
+    private void show(String msg,int type) {
         if (dialog==null)
             return;
-        imageView.setImageLevel(type.ordinal());
+        imageView.setImageLevel(type);
         textView.setText(msg);
         if (dialogx==null)
             dialogx = dialog.show();
@@ -67,18 +72,18 @@ public class DialogNote {
     }
 
     public void showCorrect(String msg) {
-        show(msg, NoteType.Correct);
+        show(msg, 0);
     }
 
     public void showError(String msg) {
-        show(msg, NoteType.Error);
-    }
-
-    public void showNote(String msg) {
-        show(msg, NoteType.Note);
+        show(msg, 1);
     }
 
     public void showWrong(String msg) {
-        show(msg, NoteType.Wrong);
+        show(msg, 2);
+    }
+
+    public void showNote(String msg) {
+        show(msg, 3);
     }
 }

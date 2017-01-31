@@ -32,6 +32,8 @@ import static android.content.Context.ACTIVITY_SERVICE;
  *          FileUtils
  *          CleanUtils
  *          EmptyUtils
+ *     update log:
+ *          1.  2017年1月30日16:37:45  xxx by xxx
  * </pre>
  */
 public class AppUtils {
