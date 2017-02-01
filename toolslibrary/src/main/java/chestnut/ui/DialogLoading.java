@@ -26,6 +26,8 @@ import testiflytek.test.chestnut.toolslibrary.R;
  *          1.0.1   2017年1月31日23:36:02  by  栗子
  *                  1.  删除一些方法
  *                  2.  新增Rx订阅版的ShowLoading
+ *          1.0.2   2017年2月1日15:33:05   by  栗子
+ *                  1.  新增dismiss方法
  * </pre>
  */
 
@@ -34,6 +36,7 @@ public class DialogLoading {
     private Dialog dialog = null;
     private TextView dialogTxt = null;
     private LinearLayout linearLayout = null;
+    private Subscriber<? super Integer> subscriber = null;
 
     /**
      * 传入Activity初始化
@@ -56,7 +59,7 @@ public class DialogLoading {
      * @param outSideCancel     点击外部是否能取消
      * @param backPressCancel   点击返回键是否能取消
      * @param autoDismissTime   超时时间/   小于零默认无限，单位毫秒
-     * @return  Observable<Integer> -1 超时，1 用户点击退出。
+     * @return  Observable<Integer> -1 超时，1 用户点击退出。0 :代码中退出。
      */
     public Observable<Integer> rxShow(String text,boolean outSideCancel, boolean backPressCancel,int autoDismissTime) {
         linearLayout.setBackgroundResource(R.drawable.toast_bg);
@@ -68,22 +71,41 @@ public class DialogLoading {
             return Observable.create(new Observable.OnSubscribe<Integer>() {
                 @Override
                 public void call(Subscriber<? super Integer> subscriber) {
+                    DialogLoading.this.subscriber = subscriber;
                     dialog.setOnCancelListener(dialogInterface -> {
                         subscriber.onNext(1);
                         subscriber.onCompleted();
+                        DialogLoading.this.subscriber = null;
                         dialog.dismiss();
                     });
                 }
             }).timeout(autoDismissTime, TimeUnit.MILLISECONDS,
                     Observable.just(-1).map(integer -> {
+                        DialogLoading.this.subscriber = null;
                         dialog.dismiss();
                         return integer;
                     }));
         else
-            return Observable.create(subscriber -> dialog.setOnCancelListener(dialogInterface -> {
-                subscriber.onNext(1);
-                subscriber.onCompleted();
-                dialog.dismiss();
-            }));
+            return Observable.create(subscriber -> {
+                DialogLoading.this.subscriber = subscriber;
+                dialog.setOnCancelListener(dialogInterface -> {
+                    subscriber.onNext(1);
+                    subscriber.onCompleted();
+                    DialogLoading.this.subscriber = null;
+                    dialog.dismiss();
+                });
+            });
+    }
+
+    /**
+     * 取消Loading
+     */
+    public void dimiss() {
+        if (DialogLoading.this.subscriber != null && dialog!=null && dialog.isShowing()) {
+            subscriber.onNext(0);
+            subscriber.onCompleted();
+            DialogLoading.this.subscriber = null;
+            dialog.dismiss();
+        }
     }
 }

@@ -8,10 +8,10 @@
     android:layout_height="120dp">
     <ProgressBar
         android:id="@+id/send_ing"
+        style="@android:style/Widget.Holo.Light.ProgressBar"
         android:layout_marginTop="25dp"
         android:layout_width="60dp"
-        android:layout_height="60dp"
-        />
+        android:layout_height="60dp" />
     <TextView
         android:id="@+id/loading_txt"
         android:layout_marginBottom="10dp"

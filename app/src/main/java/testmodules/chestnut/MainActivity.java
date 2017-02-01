@@ -23,8 +23,6 @@ import chestnut.ui.DialogNote;
 import chestnut.ui.Toastc;
 import chestnut.utils.AppUtils;
 import chestnut.utils.LogUtils;
-import rx.Observable;
-import rx.Subscriber;
 import testmodules.ArrowView;
 import testmodules.R;
 import testmodules.WeChatUtils;
@@ -118,27 +116,6 @@ public class MainActivity extends RxAppCompatActivity {
             "7_"+"Main2Activity",
     };
 
-    private Observable<String> observable1 = Observable.create(new Observable.OnSubscribe<String>() {
-        @Override
-        public void call(Subscriber<? super String> subscriber) {
-            subscriber.onNext("observable1");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            subscriber.onCompleted();
-        }
-    });
-
-    private Observable<String> observable2 = Observable.create(new Observable.OnSubscribe<String>() {
-        @Override
-        public void call(Subscriber<? super String> subscriber) {
-            subscriber.onNext("observable2");
-            subscriber.onCompleted();
-        }
-    });
-
     @OnClick({R.id.button1,R.id.button2,R.id.button3,R.id.button4,R.id.button5,R.id.button6,R.id.button7})
     public void btnClicks(Button button) {
         switch (button.getId()) {
@@ -152,19 +129,21 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button3:
-                dialogNote.showCorrect("correct");
+                dialogLoading.rxShow("xixi",true,true,1000)
+                        .subscribe(
+                                integer -> {
+
+                                }
+                        );
                 break;
 
             case R.id.button4:
-                dialogNote.showWrong("wrong");
                 break;
 
             case R.id.button5:
-                dialogNote.showError("error");
                 break;
 
             case R.id.button6:
-                dialogNote.showNote("note");
                 break;
 
             case R.id.button7:
