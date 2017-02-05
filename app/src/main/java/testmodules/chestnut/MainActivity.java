@@ -3,6 +3,7 @@ package testmodules.chestnut;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import chestnut.ui.DialogLoading;
 import chestnut.ui.DialogNote;
 import chestnut.ui.Toastc;
 import chestnut.utils.AppUtils;
+import chestnut.utils.CameraUtils;
 import chestnut.utils.LogUtils;
 import testmodules.ArrowView;
 import testmodules.R;
@@ -81,6 +83,8 @@ public class MainActivity extends RxAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bitmap = CameraUtils.getBitmapFromCG(this,requestCode,0,data,1,1,300,300,true,this.getCacheDir()+"/cutHeadPhotoTemp.jpg");
+        imageView.setImageBitmap(bitmap);
     }
     @Override
     public void onBackPressed() {
@@ -129,12 +133,7 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button3:
-                dialogLoading.rxShow("xixi",true,true,1000)
-                        .subscribe(
-                                integer -> {
-
-                                }
-                        );
+                CameraUtils.getHeadCropPhotoFromGallery(this);
                 break;
 
             case R.id.button4:

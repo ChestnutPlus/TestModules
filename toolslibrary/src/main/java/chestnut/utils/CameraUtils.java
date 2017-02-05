@@ -243,6 +243,10 @@ public class CameraUtils {
     /**
      *      对本 Utils 的进一步封装，
      *      选择图片，裁剪。
+     *      1.  在 onActivityResult 中调：
+     *          Bitmap bitmap = CameraUtils.getBitmapFromCG(this,requestCode,0,data,1,1,300,300,true,this.getCacheDir()+"/cutHeadPhotoTemp.jpg");
+     *      2.  在任意地方调用：    getHeadCropPhotoFromCamera（）
+     *
      * @param activity  调用者
      * @param cameraTackSavePath 保存的地方
      */
@@ -252,6 +256,10 @@ public class CameraUtils {
 
     /**
      *     对本 Utils 的进一步封装。
+     *     1.  在 onActivityResult 中调：
+     *          Bitmap bitmap = CameraUtils.getBitmapFromCG(this,requestCode,0,data,1,1,300,300,true,this.getCacheDir()+"/cutHeadPhotoTemp.jpg");
+     *      2.  在任意地方调用：    getHeadCropPhotoFromGallery（）
+     *
      * @param activity  调用者
      */
     public static void getHeadCropPhotoFromGallery(Activity activity) {
