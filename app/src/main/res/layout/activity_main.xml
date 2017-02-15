@@ -82,7 +82,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/btn_star_big_on"
+        app:srcCompat="@drawable/ic_untitled"
         android:layout_below="@+id/button7"
         android:layout_centerHorizontal="true"
         android:id="@+id/imageView" />

@@ -57,7 +57,6 @@ public class MainActivity extends RxAppCompatActivity {
         }
     }
     private MyHandler myHandler = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
