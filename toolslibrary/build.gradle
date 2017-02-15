@@ -11,10 +11,10 @@ android {
         minSdkVersion 17
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0.21"
+        versionName "1.0.22"
         /**
          *      1.0.20   删除了Volley 和 CircleImageView
-         *
+         *      1.0.21   修复LogUtils
          *
          */
     }
