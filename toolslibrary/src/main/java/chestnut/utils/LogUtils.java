@@ -11,7 +11,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static chestnut.utils.LogUtils.Config.*;
+import static chestnut.utils.LogUtils.Config.FILE_SUFFIX;
+import static chestnut.utils.LogUtils.Config.LOG_FILE_NAME;
+import static chestnut.utils.LogUtils.Config.LOG_FILE_PATH;
+import static chestnut.utils.LogUtils.Config.LOG_FORMAT;
+import static chestnut.utils.LogUtils.Config.LOG_SWITCH;
+import static chestnut.utils.LogUtils.Config.LOG_TAG;
+import static chestnut.utils.LogUtils.Config.LOG_TO_FILE;
+import static chestnut.utils.LogUtils.Config.LOG_TYPE;
 
 /**
  * <pre>
@@ -25,6 +32,9 @@ import static chestnut.utils.LogUtils.Config.*;
  *          2017年1月8日20:02:25   栗子
  *              1. 修复 log 方法：String 为 null 的时候，会崩溃的 bug
  *              2. 同上：log2File
+ *          2017年2月15日21:26:21  栗子
+ *              1.  修改Log2File的默认存储位置。
+ *              2.  增加 setLogFilePath
  * </pre>
  */
 public class LogUtils {
@@ -49,13 +59,22 @@ public class LogUtils {
         public static void setLogFileSwitch(Boolean logFileSwitch) {
             LOG_TO_FILE = logFileSwitch;
         }
+        public static void setLogFilePath(String logFilePath){ LOG_FILE_PATH = logFilePath; }
         public static void setLogTag(String logTag) {
             LOG_TAG = logTag;
         }
     }
 
     public static void init(Context context) { // 在Application中初始化
-        LOG_FILE_PATH = Environment.getExternalStorageDirectory().getPath() + File.separator + context.getPackageName();
+        if (context.getExternalCacheDir()!=null) {
+            LOG_FILE_PATH = context.getExternalCacheDir().getAbsolutePath();
+        }
+        else if (Environment.getExternalStorageDirectory()!=null){
+            LOG_FILE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
+        }
+        else {
+            LOG_FILE_PATH = context.getCacheDir().getAbsolutePath();
+        }
         LOG_FILE_NAME = "Log";
     }
 

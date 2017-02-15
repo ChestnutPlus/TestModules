@@ -136,6 +136,7 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button4:
+                LogUtils.iToFile("lkfjlksdjlkfjlskdj");
                 break;
 
             case R.id.button5:

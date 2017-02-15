@@ -2,7 +2,6 @@ package testmodules.chestnut;
 
 import android.app.Application;
 
-
 import chestnut.utils.CrashUtils;
 import chestnut.utils.LogUtils;
 import chestnut.utils.SPUtils;
@@ -18,6 +17,7 @@ public class MyApplication extends Application{
         super.onCreate();
         CrashUtils.getInstance().init(this);
         LogUtils.init(this);
+        LogUtils.Config.setLogFileSwitch(true);
         SPUtils.getInstance().init(this,"My");
         HttpRequest.getInstance().init();
     }
