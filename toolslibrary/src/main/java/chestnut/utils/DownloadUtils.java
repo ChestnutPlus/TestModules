@@ -97,6 +97,59 @@ public class DownloadUtils {
     }
 
     /**
+     * 获取下载状态
+     * @param context   上下文
+     * @param taskId    TaskId
+     * @return  返回下载的任务状态
+     */
+    public static Observable<DownloadStatus> getStatus(Context context, long taskId) {
+        int[] result = getBytesAndStatus(context,taskId);
+        if (result[2]==-1)
+            return Observable.just(null);
+        else {
+            Context appContext = context.getApplicationContext();
+            ContentObserver[] observer = {null};
+            return Observable.create(new Observable.OnSubscribe<DownloadStatus>() {
+                @Override
+                public void call(Subscriber<? super DownloadStatus> subscriber) {
+                    observer[0] = new ContentObserver(null) {
+                        private boolean isDoing = true;
+                        @Override
+                        public void onChange(boolean selfChange) {
+                            int[] status = getBytesAndStatus(appContext,taskId);
+
+                            switch (status[2]) {
+                                //case DownloadManager.STATUS_FAILED:
+                                //case DownloadManager.STATUS_PAUSED:
+                                case DownloadManager.STATUS_SUCCESSFUL:
+                                case DownloadManager.STATUS_RUNNING:
+                                    //case DownloadManager.STATUS_PENDING:
+                                    isDoing = true;
+                                    break;
+                                default:
+                                    isDoing = false;
+                                    break;
+                            }
+
+                            if (!isDoing)
+                                return;
+
+                            if (status[2] == DownloadManager.STATUS_SUCCESSFUL) {
+                                appContext.getContentResolver().unregisterContentObserver(observer[0]);
+                                subscriber.onCompleted();
+                                LogUtils.e(OpenLog,TAG,"onChange-STATUS_SUCCESSFUL-"+taskId);
+                            }
+                            else
+                                subscriber.onNext(new DownloadStatus(taskId,status[1],status[0],status[2]));
+                        }
+                    };
+                    appContext.getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), true, observer[0]);
+                }
+            });
+        }
+    }
+
+    /**
      * 作为返回的 Rx 的传递对象。
      */
     public static class DownloadStatus {

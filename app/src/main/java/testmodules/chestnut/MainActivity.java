@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import chestnut.ui.DialogNote;
 import chestnut.ui.Toastc;
 import chestnut.utils.AppUtils;
 import chestnut.utils.CameraUtils;
+import chestnut.utils.DownloadUtils;
 import chestnut.utils.LogUtils;
 import testmodules.ArrowView;
 import testmodules.R;
@@ -136,10 +138,15 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button4:
-                LogUtils.iToFile("lkfjlksdjlkfjlskdj");
-                
+                DownloadUtils.down(this,"http://windowserl.honeybot.cn:8080/packages/draw20161122.apk", Environment.getExternalStorageDirectory().getPath() + "/HoneyApps/","测试.apk","downing","application/vnd.android")
+                        .subscribe(downloadStatus -> {
+                            LogUtils.w(OpenLog,TAG,"onNext:"+downloadStatus.toString());
+                        },throwable -> {
+                            LogUtils.e(OpenLog,TAG,"error:"+throwable.getMessage());
+                        },()-> {
+                            LogUtils.e(OpenLog,TAG,"ok");
+                        });
                 break;
-
             case R.id.button5:
                 break;
 
