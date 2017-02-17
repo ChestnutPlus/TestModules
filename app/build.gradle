@@ -60,5 +60,8 @@ dependencies {
     compile files('libs/okhttp-3.5.0.jar')
     compile files('libs/okio-1.11.0.jar')
     compile files('libs/gson-2.2.4.jar')
+    //  微信分享框架
     compile files('libs/wechat-sdk-android-without-mta-1.0.2.jar')
+    //  下载框架
+    compile 'com.liulishuo.filedownloader:library:1.4.1'
 }

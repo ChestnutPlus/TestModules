@@ -121,6 +121,7 @@ public class MainActivity extends RxAppCompatActivity {
             "7_"+"Main2Activity",
     };
 
+    private long taskId = 0;
     @OnClick({R.id.button1,R.id.button2,R.id.button3,R.id.button4,R.id.button5,R.id.button6,R.id.button7})
     public void btnClicks(Button button) {
         switch (button.getId()) {
@@ -140,6 +141,7 @@ public class MainActivity extends RxAppCompatActivity {
             case R.id.button4:
                 DownloadUtils.down(this,"http://windowserl.honeybot.cn:8080/packages/draw20161122.apk", Environment.getExternalStorageDirectory().getPath() + "/HoneyApps/","测试.apk","downing","application/vnd.android")
                         .subscribe(downloadStatus -> {
+                            taskId = downloadStatus.taskId;
                             LogUtils.w(OpenLog,TAG,"onNext:"+downloadStatus.toString());
                         },throwable -> {
                             LogUtils.e(OpenLog,TAG,"error:"+throwable.getMessage());

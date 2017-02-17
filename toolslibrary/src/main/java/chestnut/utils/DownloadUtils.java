@@ -23,6 +23,10 @@ import rx.Subscriber;
  *          <uses-permission android:name="android.permission.INTERNET" />                      #网络权限
  *          <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />        #写存储设备权限
  *     dependent on:
+ *     update:
+ *          2017年2月17日11:06:25
+ *                  1.  增加了：getTask(),根据ID查询任务，removeTask()，移除任务。
+ *                  2.  修复了bug: down()中不监听特定任务的bug.
  * </pre>
  *
  */
@@ -43,7 +47,12 @@ public class DownloadUtils {
      * @param fileName  文件名称
      * @param title     下载任务的标题
      * @param mimeType  下载的文件类型 app: application/vnd.android
-     * @return  返回下载的任务ID号。
+     * @return  返回下载的任务状态
+     *          DownloadManager.STATUS_FAILED:     //下载失败       16
+     *          DownloadManager.STATUS_PAUSED:     //下载暂停       4
+     *          DownloadManager.STATUS_SUCCESSFUL: //下载成功       8
+     *          DownloadManager.STATUS_RUNNING:    //下载正在进行   2
+     *          DownloadManager.STATUS_PENDING:    //下载在等待     1
      */
     public static Observable<DownloadStatus> down(Context context, String url, String path, String fileName, String title, String mimeType) {
         Context appContext = context.getApplicationContext();
@@ -61,37 +70,18 @@ public class DownloadUtils {
             @Override
             public void call(Subscriber<? super DownloadStatus> subscriber) {
                 observer[0] = new ContentObserver(null) {
-                    private boolean isDoing = true;
                     @Override
-                    public void onChange(boolean selfChange) {
+                    public void onChange(boolean selfChange, Uri uri) {
+                        super.onChange(selfChange, uri);
                         int[] status = getBytesAndStatus(appContext,taskId);
-
-                        switch (status[2]) {
-                            //case DownloadManager.STATUS_FAILED:
-                            //case DownloadManager.STATUS_PAUSED:
-                            case DownloadManager.STATUS_SUCCESSFUL:
-                            case DownloadManager.STATUS_RUNNING:
-                                //case DownloadManager.STATUS_PENDING:
-                                isDoing = true;
-                                break;
-                            default:
-                                isDoing = false;
-                                break;
-                        }
-
-                        if (!isDoing)
-                            return;
-
-                        if (status[2] == DownloadManager.STATUS_SUCCESSFUL) {
+                        subscriber.onNext(new DownloadStatus(taskId,status[1],status[0],status[2]));
+                     if (status[2] == DownloadManager.STATUS_SUCCESSFUL || status[2] == DownloadManager.STATUS_FAILED || status[2] == -1) {
                             appContext.getContentResolver().unregisterContentObserver(observer[0]);
                             subscriber.onCompleted();
-                            LogUtils.e(OpenLog,TAG,"onChange-STATUS_SUCCESSFUL-"+taskId);
                         }
-                        else
-                            subscriber.onNext(new DownloadStatus(taskId,status[1],status[0],status[2]));
                     }
                 };
-                appContext.getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), true, observer[0]);
+                appContext.getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"+"/"+taskId), false, observer[0]);
             }
         });
     }
@@ -100,9 +90,9 @@ public class DownloadUtils {
      * 获取下载状态
      * @param context   上下文
      * @param taskId    TaskId
-     * @return  返回下载的任务状态
+     * @return  返回下载的任务状态，如果不存在，DownloadStatus.status = -1 .
      */
-    public static Observable<DownloadStatus> getStatus(Context context, long taskId) {
+    public static Observable<DownloadStatus> getTask(Context context, long taskId) {
         int[] result = getBytesAndStatus(context,taskId);
         if (result[2]==-1)
             return Observable.just(null);
@@ -113,37 +103,18 @@ public class DownloadUtils {
                 @Override
                 public void call(Subscriber<? super DownloadStatus> subscriber) {
                     observer[0] = new ContentObserver(null) {
-                        private boolean isDoing = true;
                         @Override
-                        public void onChange(boolean selfChange) {
+                        public void onChange(boolean selfChange, Uri uri) {
+                            super.onChange(selfChange, uri);
                             int[] status = getBytesAndStatus(appContext,taskId);
-
-                            switch (status[2]) {
-                                //case DownloadManager.STATUS_FAILED:
-                                //case DownloadManager.STATUS_PAUSED:
-                                case DownloadManager.STATUS_SUCCESSFUL:
-                                case DownloadManager.STATUS_RUNNING:
-                                    //case DownloadManager.STATUS_PENDING:
-                                    isDoing = true;
-                                    break;
-                                default:
-                                    isDoing = false;
-                                    break;
-                            }
-
-                            if (!isDoing)
-                                return;
-
-                            if (status[2] == DownloadManager.STATUS_SUCCESSFUL) {
+                            subscriber.onNext(new DownloadStatus(taskId,status[1],status[0],status[2]));
+                            if (status[2] == DownloadManager.STATUS_SUCCESSFUL || status[2] == DownloadManager.STATUS_FAILED || status[2] == -1) {
                                 appContext.getContentResolver().unregisterContentObserver(observer[0]);
                                 subscriber.onCompleted();
-                                LogUtils.e(OpenLog,TAG,"onChange-STATUS_SUCCESSFUL-"+taskId);
                             }
-                            else
-                                subscriber.onNext(new DownloadStatus(taskId,status[1],status[0],status[2]));
                         }
                     };
-                    appContext.getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), true, observer[0]);
+                    appContext.getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"+"/"+taskId), false, observer[0]);
                 }
             });
         }
@@ -200,6 +171,16 @@ public class DownloadUtils {
             }
         }
         return bytesAndStatus;
+    }
+
+    /**
+     * 移除任务
+     * @param context   上下文
+     * @param taskId    ID
+     */
+    public static void removeTask(Context context, long taskId) {
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        downloadManager.remove(taskId);
     }
 }
 
