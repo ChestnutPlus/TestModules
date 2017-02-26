@@ -37,6 +37,7 @@
             android:name=".chestnut.DialogActivity"
             android:theme="@style/DialogTransparent" />
         <activity android:name=".chestnut.WebActivity"></activity>
+        <service android:name="com.hy.HYInstall.Service.InstallService"/>
     </application>
 
 </manifest>

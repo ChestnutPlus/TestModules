@@ -1,45 +1,36 @@
 package testmodules.chestnut.bean;
 
-import io.realm.RealmObject;
+import com.litesuits.orm.db.annotation.Column;
+import com.litesuits.orm.db.annotation.PrimaryKey;
+import com.litesuits.orm.db.annotation.Table;
+import com.litesuits.orm.db.enums.AssignType;
 
 /**
  * Created by Chestnut on 2016/10/23.
  */
 
-public class User extends RealmObject{
+@Table("User")
+public class User {
 
-    private String name;
-    private int age;
-    private int sessionId;
+    @PrimaryKey(AssignType.AUTO_INCREMENT)	//主键
+    @Column("_id")
+    public int uid;
+    public String name;
+    public int age;
+    public int sessionId;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public User(int uid, String name, int age, int sessionId) {
+        this.uid = uid;
         this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
         this.age = age;
-    }
-
-    public int getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(int sessionId) {
         this.sessionId = sessionId;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "uid=" + uid +
+                ", name='" + name + '\'' +
                 ", age=" + age +
                 ", sessionId=" + sessionId +
                 '}';

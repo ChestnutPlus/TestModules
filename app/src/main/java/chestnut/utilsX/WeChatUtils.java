@@ -1,4 +1,4 @@
-package testmodules;
+package chestnut.utilsX;
 
 import android.content.Context;
 
@@ -11,7 +11,14 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import chestnut.utils.LogUtils;
 
 /**
- * Created by Chestnut on 2017/1/22.
+ * <pre>
+ *     author: Chestnut
+ *     blog  :
+ *     time  : 2017年2月26日
+ *     desc  : 微信相关工具类
+ *     thanks To :
+ *     dependent on:
+ * </pre>
  */
 
 public class WeChatUtils {

@@ -5,16 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
-
-import java.lang.ref.WeakReference;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,11 +22,9 @@ import chestnut.ui.DialogNote;
 import chestnut.ui.Toastc;
 import chestnut.utils.AppUtils;
 import chestnut.utils.CameraUtils;
-import chestnut.utils.DownloadUtils;
 import chestnut.utils.LogUtils;
 import testmodules.ArrowView;
 import testmodules.R;
-import testmodules.WeChatUtils;
 
 public class MainActivity extends RxAppCompatActivity {
 
@@ -45,20 +40,8 @@ public class MainActivity extends RxAppCompatActivity {
     private Context context = null;
     private DialogLoading dialogLoading;
     private DialogNote dialogNote;
-    private static class MyHandler extends Handler {
-        private WeakReference<MainActivity> mActivity;
-        MyHandler(MainActivity mActivity) {
-            this.mActivity = new WeakReference<>(mActivity);
-        }
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0x01:
-                    break;
-            }
-        }
-    }
-    private MyHandler myHandler = null;
+    private ProgressBar progressBar = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,14 +50,10 @@ public class MainActivity extends RxAppCompatActivity {
         toast = new Toastc(this, Toast.LENGTH_SHORT);
         initView(this);
         context = this;
-        myHandler = new MyHandler(this);
         dialogLoading = new DialogLoading(this);
         dialogNote = new DialogNote(this);
-    }
-    @Override
-    protected void onPause() {
-        LogUtils.e("onPause");
-        super.onPause();
+        progressBar = new ProgressBar(this);
+        progressBar.setVisibility(View.VISIBLE);
     }
     @Override
     protected void onDestroy() {
@@ -121,7 +100,7 @@ public class MainActivity extends RxAppCompatActivity {
             "7_"+"Main2Activity",
     };
 
-    private long taskId = 0;
+    private int taskId = 0;
     @OnClick({R.id.button1,R.id.button2,R.id.button3,R.id.button4,R.id.button5,R.id.button6,R.id.button7})
     public void btnClicks(Button button) {
         switch (button.getId()) {
@@ -130,33 +109,23 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button2:
-                WeChatUtils weChatUtils = new WeChatUtils(this,"wxc7dd48aa3239f58f");
-                weChatUtils.sharedTxt(WeChatUtils.FLAG_SESSION,"wagnnimjflsdjlkf");
                 break;
 
             case R.id.button3:
-                CameraUtils.getHeadCropPhotoFromGallery(this);
                 break;
 
             case R.id.button4:
-                DownloadUtils.down(this,"http://windowserl.honeybot.cn:8080/packages/draw20161122.apk", Environment.getExternalStorageDirectory().getPath() + "/HoneyApps/","测试.apk","downing","application/vnd.android")
-                        .subscribe(downloadStatus -> {
-                            taskId = downloadStatus.taskId;
-                            LogUtils.w(OpenLog,TAG,"onNext:"+downloadStatus.toString());
-                        },throwable -> {
-                            LogUtils.e(OpenLog,TAG,"error:"+throwable.getMessage());
-                        },()-> {
-                            LogUtils.e(OpenLog,TAG,"ok");
-                        });
                 break;
             case R.id.button5:
                 break;
 
             case R.id.button6:
+                int a = 0;
+                int b = 1/a;
                 break;
 
             case R.id.button7:
-                startActivity(new Intent(this,WebActivity.class));
+                startActivity(new Intent(this,Main2Activity.class));
                 break;
         }
     }
@@ -187,4 +156,5 @@ public class MainActivity extends RxAppCompatActivity {
         }
         return true;
     }
+
 }

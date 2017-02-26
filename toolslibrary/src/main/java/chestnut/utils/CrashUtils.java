@@ -30,6 +30,9 @@ import java.lang.Thread.UncaughtExceptionHandler;
  *           FileUtils
  *           TimeUtils
  *           AppUtils
+ *     updateLog:
+ *           2017年2月26日20:17:11     栗子
+ *              1.  增加崩溃前的回调
  * </pre>
  */
 public class CrashUtils implements UncaughtExceptionHandler {
@@ -42,6 +45,11 @@ public class CrashUtils implements UncaughtExceptionHandler {
     private CrashUtils() {
 
     }
+
+    public interface CallBack {
+        void catchCrash(String msg);
+    }
+    private CallBack callBack = null;
 
     /**
      * 获取单例
@@ -71,16 +79,14 @@ public class CrashUtils implements UncaughtExceptionHandler {
     }
 
     /**
-     * 初始化
+     *  初始化
      *
-     * @param context 上下文
+     * @param application   应用
+     * @param callBack  回掉
      */
-    public void init(Context context) {
-        if (mInitialized) return;
-        mInitialized = true;
-        mContext = context.getApplicationContext();
-        mHandler = Thread.getDefaultUncaughtExceptionHandler();
-        Thread.setDefaultUncaughtExceptionHandler(this);
+    public void init(Application application,CallBack callBack) {
+        this.callBack = callBack;
+        init(application);
     }
 
     @Override
@@ -116,17 +122,20 @@ public class CrashUtils implements UncaughtExceptionHandler {
         sb.append("\n************* Crash Log End ****************\n\n");
         Log.e("Unknown-Crash", sb.toString());
         FileUtils.writeFileFromString(fullPath, sb.toString(), false);
-
+        boolean[] isTimeToExit = {false};
         new Thread() {
             @Override
             public void run() {
                 Looper.prepare();
-                Toast.makeText(mContext, "很抱歉,程序出现异常...",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "很抱歉,程序出现异常...", Toast.LENGTH_LONG).show();
+                if (callBack != null)
+                    callBack.catchCrash(sb.toString());
+                isTimeToExit[0] = true;
                 Looper.loop();
             }
         }.start();
-        SystemClock.sleep(1000);
+        while (!isTimeToExit[0]);
+        SystemClock.sleep(500);
         AppUtils.exitApp(mContext);
 //        if (mHandler != null) {
 //            mHandler.uncaughtException(thread, throwable);
@@ -138,7 +147,7 @@ public class CrashUtils implements UncaughtExceptionHandler {
      *
      * @return 崩溃头
      */
-    public StringBuilder getCrashHead() {
+    private StringBuilder getCrashHead() {
         StringBuilder sb = new StringBuilder();
         try {
             PackageInfo pi = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);

@@ -32,6 +32,7 @@
 -keep class chestnut.utils.ShellUtils$CommandResult{ *; }
 -keep class chestnut.utils.ThreadPoolUtils$Type{ *; }
 -keep class chestnut.rx.RxEvent{ *; }
+-keep class chestnut.view.SweetAlertDialog.Rotate3dAnimation{*;}
 
 # ---------------- Rx避免混淆 ------------
 # RxJava RxAndroid

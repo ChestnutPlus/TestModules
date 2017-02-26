@@ -1,10 +1,15 @@
 package testmodules.chestnut;
 
 import android.app.Application;
+import android.util.Log;
 
+import com.liulishuo.filedownloader.FileDownloader;
+
+import chestnut.utils.AppUtils;
 import chestnut.utils.CrashUtils;
 import chestnut.utils.LogUtils;
 import chestnut.utils.SPUtils;
+import chestnut.utilsX.EmailUtils;
 import chestnut.web.HttpRequest;
 
 /**
@@ -15,10 +20,14 @@ public class MyApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        CrashUtils.getInstance().init(this);
+        CrashUtils.getInstance().init(this, s ->
+                Log.e("send-Crash-Email:",""+EmailUtils.sendEmail("smtp.163.com","25","13590272662@163.com","13707867Kid","974920378@qq.com",
+                        AppUtils.getAppName(MyApplication.this)+":crash",s))
+        );
         LogUtils.init(this);
         LogUtils.Config.setLogFileSwitch(true);
-        SPUtils.getInstance().init(this,"My");
+        SPUtils.getInstance().init(this,"TestModules.chestnut");
         HttpRequest.getInstance().init();
+        FileDownloader.init(this);
     }
 }

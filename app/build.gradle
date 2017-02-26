@@ -4,7 +4,7 @@ apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.3"
+    buildToolsVersion '25.0.1'
     defaultConfig {
         applicationId "testmodules.chestnut"
         minSdkVersion 17
@@ -52,7 +52,8 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:design:25.1.1'
     testCompile 'junit:junit:4.12'
     compile project(path: ':toolslibrary')
     compile 'com.trello:rxlifecycle:0.8.0'
@@ -61,7 +62,13 @@ dependencies {
     compile files('libs/okio-1.11.0.jar')
     compile files('libs/gson-2.2.4.jar')
     //  微信分享框架
-    compile files('libs/wechat-sdk-android-without-mta-1.0.2.jar')
+    compile files('libs/WeChat/wechat-sdk-android-without-mta-1.0.2.jar')
     //  下载框架
     compile 'com.liulishuo.filedownloader:library:1.4.1'
+    //  DB
+    compile files('libs/lite-orm-1.9.1.jar')
+    //  Email依赖
+    compile files('libs/Email/activation.jar')
+    compile files('libs/Email/additionnal.jar')
+    compile files('libs/Email/mail.jar')
 }
