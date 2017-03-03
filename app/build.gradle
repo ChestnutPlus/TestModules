@@ -71,4 +71,5 @@ dependencies {
     compile files('libs/Email/activation.jar')
     compile files('libs/Email/additionnal.jar')
     compile files('libs/Email/mail.jar')
+    compile files('libs/glide-3.7.0.jar')
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import chestnut.Helper.RecorderHelper;
 import chestnut.ui.DialogLoading;
 import chestnut.ui.DialogNote;
 import chestnut.ui.Toastc;
@@ -100,7 +102,7 @@ public class MainActivity extends RxAppCompatActivity {
             "7_"+"Main2Activity",
     };
 
-    private int taskId = 0;
+    RecorderHelper recorderHelper = null;
     @OnClick({R.id.button1,R.id.button2,R.id.button3,R.id.button4,R.id.button5,R.id.button6,R.id.button7})
     public void btnClicks(Button button) {
         switch (button.getId()) {
@@ -115,13 +117,39 @@ public class MainActivity extends RxAppCompatActivity {
                 break;
 
             case R.id.button4:
+                recorderHelper.stopRecord();
+                recorderHelper.close();
                 break;
             case R.id.button5:
+
+                recorderHelper = new RecorderHelper();
+                recorderHelper.setCallBack(new RecorderHelper.CallBack() {
+                    @Override
+                    public void onRecordStart(String file) {
+                        LogUtils.w(OpenLog,TAG,"onRecordStart");
+                    }
+
+                    @Override
+                    public void onRecordDBChange(double dbValue) {
+                        LogUtils.w(OpenLog,TAG,"onRecordDBChange:"+dbValue);
+                    }
+
+                    @Override
+                    public void onRecordFail(String file, String msg) {
+                        LogUtils.w(OpenLog,TAG,"onRecordFail");
+                    }
+
+                    @Override
+                    public void onRecordEnd(String file) {
+                        LogUtils.w(OpenLog,TAG,"onRecordEnd");
+                    }
+                });
+                recorderHelper.init(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Test.amr").startRecord();
+
                 break;
 
             case R.id.button6:
-                int a = 0;
-                int b = 1/a;
+                startActivity(new Intent(this,RecyclerActivity.class));
                 break;
 
             case R.id.button7:
@@ -156,5 +184,4 @@ public class MainActivity extends RxAppCompatActivity {
         }
         return true;
     }
-
 }

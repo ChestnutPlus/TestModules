@@ -7,8 +7,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -16,6 +14,7 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -36,8 +35,9 @@
         <activity
             android:name=".chestnut.DialogActivity"
             android:theme="@style/DialogTransparent" />
-        <activity android:name=".chestnut.WebActivity"></activity>
-        <service android:name="com.hy.HYInstall.Service.InstallService"/>
+        <activity android:name=".chestnut.WebActivity" />
+
+        <activity android:name=".chestnut.RecyclerActivity"></activity>
     </application>
 
 </manifest>

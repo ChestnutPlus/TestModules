@@ -8,11 +8,6 @@ import android.telephony.TelephonyManager;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * <pre>
